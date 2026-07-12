@@ -53,12 +53,8 @@ def build_user_prompt(query: dict) -> str:
     if location:
         loc_desc = f"lat={location['lat']}, lon={location['lon']}"
         if location.get("label"):
-            loc_desc += f", label=\"{location['label']}\""
+            loc_desc += f', label="{location["label"]}"'
     else:
         loc_desc = "(none provided)"
 
-    return (
-        f"User request: {text}\n"
-        f"Location: {loc_desc}\n\n"
-        "Return the JSON plan now."
-    )
+    return f"User request: {text}\nLocation: {loc_desc}\n\nReturn the JSON plan now."

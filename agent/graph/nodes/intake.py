@@ -18,9 +18,9 @@ Returns a partial state update: `{"query": {...}}` on success, or
 
 from __future__ import annotations
 
-from typing import Any, Optional
+from typing import Any
 
-from graph.state import AgentState
+from agent.graph.state import AgentState
 
 # Sanity bounds -- catches obviously malformed payloads (e.g. swapped
 # lat/lon, stray (0, 0) defaults) before they propagate downstream.
@@ -28,7 +28,7 @@ _LAT_RANGE = (-90.0, 90.0)
 _LON_RANGE = (-180.0, 180.0)
 
 
-def _normalize_coords(coords: Optional[dict]) -> Optional[dict]:
+def _normalize_coords(coords: dict | None) -> dict | None:
     """Validate and coerce a {"lat": ..., "lon": ...} payload."""
     if not coords:
         return None
@@ -47,7 +47,7 @@ def _normalize_coords(coords: Optional[dict]) -> Optional[dict]:
     return {"lat": lat, "lon": lon}
 
 
-def _normalize_pin(pin: Optional[dict]) -> Optional[dict]:
+def _normalize_pin(pin: dict | None) -> dict | None:
     """
     Normalize a dropped-pin payload. Pins may carry richer context than raw
     coords (e.g. a place label the client already resolved), so we keep
@@ -64,7 +64,7 @@ def _normalize_pin(pin: Optional[dict]) -> Optional[dict]:
     return {**coords, "label": label} if label else coords
 
 
-def _normalize_text(raw_text: Optional[str]) -> Optional[str]:
+def _normalize_text(raw_text: str | None) -> str | None:
     if raw_text is None:
         return None
     text = raw_text.strip()
@@ -86,12 +86,7 @@ def run(state: AgentState) -> dict[str, Any]:
     location = pin or coords
 
     if text is None and location is None:
-        return {
-            "error": (
-                "intake: no usable input -- need at least one of "
-                "raw_text, coords, or pin."
-            )
-        }
+        return {"error": ("intake: no usable input -- need at least one of raw_text, coords, or pin.")}
 
     query = {
         "text": text,
