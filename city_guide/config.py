@@ -40,12 +40,13 @@ SearchConfig = _SearchConfig()
 
 @dataclass(frozen=True)
 class _TourConfig:
-    candidate_radius: int = 1500  # wide, shallow gather for curation
+    candidate_radius: int = 2500  # hard cap on the curation gather radius (scaled from route length)
     stop_radius: int = 200  # deep gather around each baked stop
     max_candidates: int = 50  # cap for the curator prompt
-    min_stops: int = 4
-    max_stops: int = 10
-    max_length_meters: int = 4000  # drop worst-detour stops beyond this
+    min_stops: int = 3
+    max_stops: int = 12
+    default_length_meters: int = 2000  # circular route target; CLI --length overrides
+    meters_per_stop: int = 250  # stop budget heuristic: length / this, clamped to min/max
 
 
 TourConfig = _TourConfig()
@@ -115,6 +116,7 @@ class _LlmConfig:
     judge_temperature: float = 0.1
     curator_temperature: float = 0.3
     batch_concurrency: int = 4  # parallel HTTP calls in EndpointBackend batches
+    regen_attempts: int = 1  # verify → regenerate rounds; each round = 2 calls per failing story
 
 
 LlmConfig = _LlmConfig()

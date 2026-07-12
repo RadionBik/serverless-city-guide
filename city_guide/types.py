@@ -187,6 +187,8 @@ class TourPlan(BaseModel):
     language: Language = Language.EN
     note: str = ""
     stops: list[TourStop] = []
+    circular: bool = True
+    target_length_m: int = 0
     total_length_m: int = 0
     maps_url: str = ""
 

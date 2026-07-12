@@ -1,0 +1,4 @@
+# Personal project — use public PyPI regardless of any global (work) uv index config.
+[[index]]
+url = "https://pypi.org/simple"
+default = true

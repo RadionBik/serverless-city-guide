@@ -98,9 +98,20 @@ async def plan_tour(
     backend: LLMBackend,
     *,
     language: Language = Language.EN,
+    length_m: int | None = None,
+    circular: bool = True,
 ) -> TourPlan:
-    """Submit-time tour planning: gather wide → curate (LLM, by ID) → route (code)."""
-    display, _, _ = await gather(lat, lon, radius=TourConfig.candidate_radius, interest=interest, with_web=False)
+    """Submit-time tour planning: gather wide → curate (LLM, by ID) → route (code).
+
+    Route length is the one knob: it sets the gather radius (a circular route of
+    length L reaches ~L/2 from the pin), the curator's stop budget, and the trim
+    cap. Sparse areas may undershoot the target — never padded artificially.
+    """
+    target = length_m or TourConfig.default_length_meters
+    radius = max(300, min(target // 2, TourConfig.candidate_radius))
+    max_stops = max(TourConfig.min_stops, min(TourConfig.max_stops, target // TourConfig.meters_per_stop))
+
+    display, _, _ = await gather(lat, lon, radius=radius, interest=interest, with_web=False)
     candidates = build_candidates(display)
     if not candidates:
         return TourPlan(
@@ -109,11 +120,13 @@ async def plan_tour(
             origin_lon=lon,
             interest=interest,
             language=language,
+            circular=circular,
+            target_length_m=target,
             note="No candidate places found around this location.",
         )
 
-    curated = await curate(candidates, interest, backend)
-    stops, total = compose_route(lat, lon, candidates, curated.stops)
+    curated = await curate(candidates, interest, backend, min_stops=TourConfig.min_stops, max_stops=max_stops)
+    stops, total = compose_route(lat, lon, candidates, curated.stops, max_length=target, circular=circular)
     return TourPlan(
         guide_id=_guide_id(lat, lon),
         origin_lat=lat,
@@ -122,8 +135,10 @@ async def plan_tour(
         language=language,
         note=curated.note,
         stops=stops,
+        circular=circular,
+        target_length_m=target,
         total_length_m=total,
-        maps_url=walking_maps_url(lat, lon, stops),
+        maps_url=walking_maps_url(lat, lon, stops, circular=circular),
     )
 
 

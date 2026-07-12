@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-from city_guide.config import TourConfig
 from city_guide.types import (
     THEME_CONFIGS,
     Candidate,
@@ -212,11 +211,11 @@ Do not worry about walking order — that is computed separately.
 Respond as JSON matching the provided schema."""
 
 
-def build_curator_messages(candidates: list[Candidate], interest: str) -> list[Message]:
+def build_curator_messages(candidates: list[Candidate], interest: str, min_stops: int, max_stops: int) -> list[Message]:
     lines = []
     for c in candidates:
         hint = f" — {c.hint}" if c.hint else ""
         lines.append(f"id={c.id}: {c.name} ({c.kind}, {c.dist_m} m){hint}")
-    system = CURATOR_SYSTEM_TEMPLATE.format(min_stops=TourConfig.min_stops, max_stops=TourConfig.max_stops)
+    system = CURATOR_SYSTEM_TEMPLATE.format(min_stops=min_stops, max_stops=max_stops)
     user = f"## INTEREST\n{interest}\n\n## CANDIDATES\n" + "\n".join(lines)
     return [{"role": "system", "content": system}, {"role": "user", "content": user}]

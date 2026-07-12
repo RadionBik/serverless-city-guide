@@ -34,6 +34,7 @@ from city_guide.prompts import (
 )
 from city_guide.store import GuideStore, read_tour_plan
 from city_guide.types import GuideManifest, StopStory, StoryResponse, TourPlan, VerifyReport
+from city_guide.verifier import strip_unsupported
 
 logger = logging.getLogger(__name__)
 
@@ -72,9 +73,11 @@ async def bake(plan: TourPlan, backend: LLMBackend, store: GuideStore) -> GuideM
         judge_batches, VerifyReport, temperature=LlmConfig.judge_temperature
     )
 
-    # 4. Regenerate failures — one batch retry, then final verify of the retried ones
-    failed = [i for i, r in enumerate(reports) if r.unsupported]
-    if failed:
+    # 4. Regenerate failures — batch retry rounds, then strip what still fails
+    for _ in range(LlmConfig.regen_attempts):
+        failed = [i for i, r in enumerate(reports) if r.unsupported]
+        if not failed:
+            break
         logger.info("Regenerating %d failed chapters: %s", len(failed), failed)
         retry_batches = [
             build_regenerate_messages(chapter_messages[i], chapters[i], [c.claim for c in reports[i].unsupported])
@@ -89,6 +92,12 @@ async def bake(plan: TourPlan, backend: LLMBackend, store: GuideStore) -> GuideM
         for k, i in enumerate(failed):
             chapters[i] = retried[k].text
             reports[i] = recheck[k]
+
+    for i, report in enumerate(reports):
+        if report.unsupported:
+            chapters[i], removed = strip_unsupported(chapters[i], report)
+            if removed:
+                logger.info("Stop %d: removed %d ungrounded sentences", i, removed)
 
     # 5. Package
     for i, stop in enumerate(plan.stops):

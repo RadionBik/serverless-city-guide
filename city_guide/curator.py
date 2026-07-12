@@ -12,13 +12,16 @@ from city_guide.types import Candidate, CuratorResponse
 logger = logging.getLogger(__name__)
 
 
-async def curate(candidates: list[Candidate], interest: str, backend: LLMBackend) -> CuratorResponse:
+async def curate(
+    candidates: list[Candidate], interest: str, backend: LLMBackend, *, min_stops: int, max_stops: int
+) -> CuratorResponse:
     """Pick stops for the interest. Selection is by ID — a place cannot be invented.
 
+    min/max stops come from the route-length budget, not a fixed constant.
     Unknown IDs → one retry with the error spelled out, then the bad picks are dropped.
     """
     known_ids = {c.id for c in candidates}
-    messages = build_curator_messages(candidates, interest)
+    messages = build_curator_messages(candidates, interest, min_stops, max_stops)
     response = await backend.generate(messages, CuratorResponse, temperature=LlmConfig.curator_temperature)
 
     bad = [p.candidate_id for p in response.stops if p.candidate_id not in known_ids]
