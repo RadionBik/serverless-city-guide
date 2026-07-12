@@ -63,6 +63,12 @@ async def cmd_intro(args: argparse.Namespace) -> None:
         print(evidence)
         return
 
+    if not display.places and not data.tavily_snippets and not baked:
+        # No evidence at all — any story here would be pure hallucination. Skip the LLM.
+        radius = args.radius or SearchConfig.default_display_radius
+        print(f"Nothing notable within {radius} m of ({args.lat}, {args.lon}) — try a larger --radius or another pin.")
+        return
+
     story, messages = await narrate(evidence, backend, language=args.lang, theme=args.focus, verbosity=args.detail)
     if args.no_verify:
         print(story)

@@ -183,6 +183,9 @@ Split the story into atomic factual claims — named places, dates, numbers, att
   do not mark them unsupported unless they contradict the evidence.
 
 Ignore style, opinions, and recommendations — only facts.
+If the evidence is empty or sparse, every named place, date, or number in the story is
+unsupported — still extract and list those claims, never return an empty claim list
+for a story that names places.
 Respond as JSON matching the provided schema."""
 
 
