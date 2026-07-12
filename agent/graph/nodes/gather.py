@@ -12,6 +12,7 @@ from __future__ import annotations
 import logging
 from typing import Any
 
+from agent.graph.nodes.planner import DEFAULT_GUIDE_RADIUS_M
 from agent.graph.state import AgentState
 from city_guide.narrator import build_evidence
 from city_guide.pipeline import gather as engine_gather
@@ -19,8 +20,6 @@ from city_guide.pipeline import warm_context
 from city_guide.store import GuideStore
 
 logger = logging.getLogger(__name__)
-
-DEFAULT_GUIDE_RADIUS_M = 750
 
 
 async def run(state: AgentState) -> dict[str, Any]:
