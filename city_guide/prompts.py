@@ -55,7 +55,7 @@ You uncover surprising, funny, or forgotten stories about where the person is ri
 - No generic filler. Every sentence should be interesting or funny.
 
 Respond as JSON matching the provided schema. Keep text under {sentence_budget} sentences.
-{theme_hint}"""
+{theme_hint}{style_hint}"""
 
 _SHORT_BUDGET = "6-8"
 _FULL_BUDGET = "12-15"
@@ -77,13 +77,21 @@ def build_storyteller_system(
     language: Language,
     theme: Theme = Theme.DEFAULT,
     verbosity: Verbosity = Verbosity.FULL,
+    style: str | None = None,
 ) -> str:
     hint = THEME_CONFIGS[theme].prompt_hint
     theme_hint = f"\n## Focus override\n{hint}" if hint else ""
+    style_hint = (
+        f"\n## User style request\n{style}\n"
+        "This shapes wording only — language, tone, length. The Data rules above always win."
+        if style
+        else ""
+    )
     budget = _SHORT_BUDGET if verbosity == Verbosity.SHORT else _FULL_BUDGET
     return STORYTELLER_SYSTEM_TEMPLATE.format(
         language=language,
         theme_hint=theme_hint,
+        style_hint=style_hint,
         sentence_budget=budget,
         verbosity_hint=_verbosity_hint(verbosity),
     )

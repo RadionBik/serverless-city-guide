@@ -29,8 +29,6 @@ class _SearchConfig:
     fetch_radius: int = 500
     default_display_radius: int = 250
     max_display_radius: int = 500
-    radius_options: tuple[int, ...] = (100, 250, 500)
-    auto_expand_min_places: int = 5
     dedup_proximity_meters: int = 30
     dedup_min_name_length: int = 5
 

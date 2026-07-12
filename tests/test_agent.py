@@ -58,8 +58,9 @@ async def test_graph_smoke(monkeypatch: pytest.MonkeyPatch) -> None:
     class FakeBackend:
         async def generate(self, messages: Any, schema: Any, *, temperature: float) -> Any:
             if schema is GuideSettings:
-                return GuideSettings(theme=Theme.FOOD, verbosity=Verbosity.SHORT, with_web=False)
+                return GuideSettings(theme=Theme.FOOD, verbosity=Verbosity.SHORT, style="spooky, answer in Russian")
             if schema is StoryResponse:
+                seen["system"] = messages[0]["content"]
                 return StoryResponse(text="A tasty corner.")
             if schema is VerifyReport:
                 return VerifyReport(claims=[])
@@ -79,7 +80,8 @@ async def test_graph_smoke(monkeypatch: pytest.MonkeyPatch) -> None:
     )
 
     assert seen["theme"] == Theme.FOOD  # the planned settings actually reached the engine
-    assert seen["with_web"] is False
+    assert seen["with_web"] is True  # web search is not a knob — always on
+    assert "spooky, answer in Russian" in seen["system"]  # style reached the storyteller prompt
     assert result["reply"].startswith("A tasty corner.")
     assert "_verification:" in result["reply"]
 

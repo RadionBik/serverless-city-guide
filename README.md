@@ -29,7 +29,7 @@ uv run guide.py intro 52.4986 13.4194
 uv run guide.py intro 52.4986 13.4194 --no-verify
 
 # or just ask in free text — a small LangGraph agent (agent/) turns your words
-# into the engine settings (theme, length, language, radius, web search)
+# into the engine settings (focus, theme, radius, length) plus a free-form style
 uv run guide.py ask "what's the food story here? keep it short" 52.4986 13.4194
 
 # 1 km circular walking tour, baked via the endpoint (no job)

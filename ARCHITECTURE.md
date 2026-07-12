@@ -53,10 +53,15 @@ The CLI is thin glue, no GPU, runs anywhere. The endpoint is the only served com
 `guide.py ask "any dark history here? keep it short" LAT LON` runs a small
 LangGraph pipeline (`agent/`): `intake → plan → gather → narrate → verify → reply`.
 The agent's one real decision is the **plan** node: a strict-JSON LLM call
-turns the free text into the same engine settings the CLI takes as flags —
-theme, verbosity, language, radius (clamped in code), web search, interest.
-Every other node delegates to the engine above. Planning failure degrades to
-the CLI defaults; no node failure kills the turn.
+turns the free text into the engine settings. Structured fields gate
+retrieval and are validated in code — interest (Tavily seed), theme (the
+retrieval preset derived from interest), radius (clamped), verbosity (keeps
+the hard length-limit prompt block). Wording wishes — tone, language, length
+nuance — ride in one free-form `style` field the storyteller reads directly,
+subordinate to the data rules. Web search is not a knob: always on, the
+engine skips Tavily without an API key anyway. Every other node delegates to
+the engine above. Planning failure degrades to the CLI defaults; no node
+failure kills the turn.
 
 Deferred on purpose: streaming narration, a cheap pre-check before the LLM
 judge, multi-turn memory (chat history is carried in state, not yet used).

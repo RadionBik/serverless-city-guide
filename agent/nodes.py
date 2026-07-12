@@ -155,13 +155,15 @@ async def gather(state: AgentState) -> dict[str, Any]:
         return {"evidence": None}
 
     lat, lon = location["lat"], location["lon"]
+    # Web search always on: extra evidence only tightens verification, and
+    # the engine skips Tavily without an API key anyway.
     display, analysis, data = await engine_gather(
         lat,
         lon,
         radius=settings.radius_m,
         theme=settings.theme,
         interest=settings.interest or query.get("text"),
-        with_web=settings.with_web,
+        with_web=True,
     )
     baked = warm_context(GuideStore(), lat, lon, settings.radius_m or SearchConfig.default_display_radius)
 
@@ -201,9 +203,9 @@ async def narrate(state: AgentState) -> dict[str, Any]:
         story, messages = await engine_narrate(
             evidence,
             EndpointBackend(),
-            language=settings.language,
             theme=settings.theme,
             verbosity=settings.verbosity,
+            style=settings.style,
         )
     except Exception as exc:  # noqa: BLE001 -- a narration failure shouldn't crash the turn
         logger.error("narrate: storyteller call failed: %s", exc)

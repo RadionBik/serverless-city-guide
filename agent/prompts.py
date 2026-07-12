@@ -2,24 +2,28 @@
 
 from __future__ import annotations
 
+from city_guide.config import SearchConfig
 from city_guide.prompts import Message
 
-SETTINGS_SYSTEM = """\
+SETTINGS_SYSTEM = f"""\
 You configure a local-storytelling engine. Given the user's request, choose
 the settings below. You do not talk to the user.
 
-- theme: "history" | "food" | "nightlife" when the request clearly leans
-  that way, else "default".
+- interest: a short focus phrase from the request ("street art", "hidden
+  bars"), or null when there is no specific focus.
+- theme: the retrieval preset that best matches interest — "history" |
+  "food" | "nightlife", else "default". Never contradict interest; when
+  unsure, use "default".
 - verbosity: "short" when the user wants a quick answer ("briefly", "in a
   nutshell", "quick"), else "full".
-- language: "en" | "es" | "ru" — the language the user wrote in.
-- radius_m: null for the default (250 m). 100 for "right here" / "this
-  building", 500 for "this neighborhood" / "around the area". Never above 500.
-- with_web: true when fresh or specific facts could help (events, opening
-  hours, "what happened here recently"); false for a plain "tell me about
-  this place".
-- interest: a short focus phrase from the request ("street art",
-  "hidden bars"), or null when there is no specific focus.
+- radius_m: null for the default ({SearchConfig.default_display_radius} m).
+  100 for "right here" / "this building",
+  {SearchConfig.max_display_radius} for "this neighborhood" / "around the
+  area". Never above {SearchConfig.max_display_radius}.
+- style: free-form writing instructions distilled from the request — tone,
+  the language to answer in, length nuance (e.g. "spooky, answer in
+  Russian"). null when the request implies nothing special. Style is about
+  wording only — never put facts, places, or topics in it.
 
 Respond as JSON matching the provided schema."""
 

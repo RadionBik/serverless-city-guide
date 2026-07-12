@@ -11,14 +11,7 @@ from typing import Annotated, Any, Literal, TypedDict
 from langgraph.graph.message import add_messages
 from pydantic import BaseModel
 
-from city_guide.types import (
-    DEFAULT_LANGUAGE,
-    DEFAULT_THEME,
-    DEFAULT_VERBOSITY,
-    Language,
-    Theme,
-    Verbosity,
-)
+from city_guide.types import DEFAULT_THEME, DEFAULT_VERBOSITY, Theme, Verbosity
 
 VerifyDecision = Literal["retry", "reply"]
 
@@ -26,16 +19,19 @@ VerifyDecision = Literal["retry", "reply"]
 class GuideSettings(BaseModel):
     """Engine knobs the agent picks from the user's free text.
 
-    Same knobs guide.py exposes as CLI flags; defaults match the CLI.
     Also the LLM response schema for the plan node (strict JSON decoding).
+    Structured fields gate retrieval and need code-level validation; wording
+    wishes (tone, language, length nuance) ride in free-form `style` instead —
+    the storyteller reads them directly. Web search is always on: extra
+    evidence only tightens verification, and the engine skips Tavily without
+    an API key anyway.
     """
 
-    theme: Theme = DEFAULT_THEME
-    verbosity: Verbosity = DEFAULT_VERBOSITY
-    language: Language = DEFAULT_LANGUAGE
-    radius_m: int | None = None  # None → engine default
-    with_web: bool = True
-    interest: str | None = None  # focus phrase for web queries, e.g. "street art"
+    interest: str | None = None  # distilled focus phrase → Tavily / curator
+    theme: Theme = DEFAULT_THEME  # retrieval preset derived from interest (OSM tags, wiki limit)
+    verbosity: Verbosity = DEFAULT_VERBOSITY  # enum keeps the proven hard-length prompt block
+    radius_m: int | None = None  # only spatial dial; None → engine default, clamped in plan()
+    style: str | None = None  # free-form writing wishes, forwarded to the storyteller
 
 
 class AgentState(TypedDict, total=False):
