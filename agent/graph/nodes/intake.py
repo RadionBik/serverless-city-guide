@@ -28,14 +28,17 @@ _LAT_RANGE = (-90.0, 90.0)
 _LON_RANGE = (-180.0, 180.0)
 
 
-def _normalize_coords(coords: dict | None) -> dict | None:
+def _normalize_coords(coords: dict[str, Any] | None) -> dict[str, Any] | None:
     """Validate and coerce a {"lat": ..., "lon": ...} payload."""
     if not coords:
         return None
 
+    raw_lon = coords.get("lon", coords.get("lng"))
+    if raw_lon is None:
+        return None
     try:
         lat = float(coords["lat"])
-        lon = float(coords.get("lon", coords.get("lng")))
+        lon = float(raw_lon)
     except (KeyError, TypeError, ValueError):
         return None
 
@@ -47,7 +50,7 @@ def _normalize_coords(coords: dict | None) -> dict | None:
     return {"lat": lat, "lon": lon}
 
 
-def _normalize_pin(pin: dict | None) -> dict | None:
+def _normalize_pin(pin: dict[str, Any] | None) -> dict[str, Any] | None:
     """
     Normalize a dropped-pin payload. Pins may carry richer context than raw
     coords (e.g. a place label the client already resolved), so we keep

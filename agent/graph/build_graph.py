@@ -1,11 +1,11 @@
-# graph/build_graph.py (shape, not final code)
 from langgraph.graph import END, StateGraph
+from langgraph.graph.state import CompiledStateGraph
 
 from agent.graph.nodes import gather, intake, narrate, planner, reply, verify
 from agent.graph.state import AgentState
 
 
-def build_graph():
+def build_graph() -> CompiledStateGraph[AgentState, None, AgentState, AgentState]:
     g = StateGraph(AgentState)
 
     g.add_node("intake", intake.run)

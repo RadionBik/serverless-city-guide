@@ -9,6 +9,8 @@ job -- so this prompt asks for structured JSON only.
 
 from __future__ import annotations
 
+from typing import Any
+
 SYSTEM_PROMPT = """\
 You are the planning step of a real-time travel companion agent. You do \
 not talk to the user. Your only job is to decide which data sources the \
@@ -46,7 +48,7 @@ area (e.g. "in this neighborhood" vs "right here").
 """
 
 
-def build_user_prompt(query: dict) -> str:
+def build_user_prompt(query: dict[str, Any]) -> str:
     text = query.get("text") or "(no free text -- location-only request)"
     location = query.get("location")
 

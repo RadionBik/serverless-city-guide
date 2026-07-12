@@ -8,11 +8,9 @@ returns a dict of the fields it's updating (LangGraph merges this into the
 running state). Keeping this in one typed place means `build_graph.py` and
 every node file agree on the same contract without importing each other.
 
-Field types are intentionally loose (dict/Any) for now, since `schemas/`
-(query.py, evidence.py, profile.py) are not yet populated. Once those are
-filled in, swap the annotations below for the real pydantic models -- e.g.
-`query: Optional[Query]` instead of `query: Optional[dict]` -- without
-changing any node signatures.
+Field types are intentionally loose (dict[str, Any]) for now. If the agent
+shell grows real schemas, swap the annotations below for pydantic models
+without changing any node signatures.
 """
 
 from __future__ import annotations
@@ -27,19 +25,19 @@ VerifyDecision = Literal["retry", "reply"]
 class AgentState(TypedDict, total=False):
     # ---- raw input (set once, by the caller / intake) ----
     raw_text: str | None
-    coords: dict | None  # {"lat": float, "lon": float}
-    pin: dict | None  # dropped-pin payload, if distinct from coords
+    coords: dict[str, Any] | None  # {"lat": float, "lon": float}
+    pin: dict[str, Any] | None  # dropped-pin payload, if distinct from coords
     user_id: str | None  # for future profile/memory lookup
 
     # ---- intake output ----
     # Normalized request: intent, location, freeform question, etc.
     # Will become `schemas.query.Query` once that schema exists.
-    query: dict | None
+    query: dict[str, Any] | None
 
     # ---- planner output ----
     # Which gather sources to call and with what sub-queries, e.g.
     # {"reverse_geocode": True, "web_search": {"query": "..."}, "guide_store": {...}}
-    plan: dict | None
+    plan: dict[str, Any] | None
 
     # ---- gather output ----
     # Assembled evidence corpus (city_guide.narrator.build_evidence output) —
@@ -49,17 +47,17 @@ class AgentState(TypedDict, total=False):
     # ---- future: memory / personalization (read side) ----
     # Retrieved user preferences/topics, injected into the narrate prompt.
     # Will become `schemas.profile.UserProfile`.
-    user_profile: dict | None
+    user_profile: dict[str, Any] | None
 
     # ---- gather output (continued) ----
     # Counts for logging/UX ("found 12 places, 3 web snippets, 2 baked stories")
-    evidence_stats: dict | None
+    evidence_stats: dict[str, Any] | None
 
     # ---- narrate output ----
     narration: str | None
     # The exact prompt messages the story came from — verify feeds them back
     # to city_guide's regenerate step.
-    narrator_messages: list[dict] | None
+    narrator_messages: list[dict[str, Any]] | None
 
     # ---- verify output ----
     # Summary line of city_guide's claim report ("9 supported, 1 uncertain...");
@@ -81,8 +79,8 @@ class AgentState(TypedDict, total=False):
 
 def initial_state(
     raw_text: str | None = None,
-    coords: dict | None = None,
-    pin: dict | None = None,
+    coords: dict[str, Any] | None = None,
+    pin: dict[str, Any] | None = None,
     user_id: str | None = None,
 ) -> AgentState:
     """Construct a fresh state for a single turn."""

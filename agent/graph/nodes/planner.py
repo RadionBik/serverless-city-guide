@@ -46,7 +46,7 @@ class PlanResponse(BaseModel):
     web_search: _WebSearchPlan | None = None
 
 
-def _heuristic_plan(query: dict) -> dict:
+def _heuristic_plan(query: dict[str, Any]) -> dict[str, Any]:
     """Deterministic fallback: location-only requests and LLM-failure safety net."""
     has_text = bool(query.get("has_text"))
     has_location = bool(query.get("has_location"))
@@ -63,7 +63,7 @@ async def run(state: AgentState) -> dict[str, Any]:
     if state.get("error"):
         return {}
 
-    query: dict | None = state.get("query")
+    query: dict[str, Any] | None = state.get("query")
     if not query:
         return {"error": "planner: no query in state -- intake must run first."}
 
