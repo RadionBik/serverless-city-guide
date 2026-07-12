@@ -1,55 +1,26 @@
 """
-Gather node -- fans out to whatever sources `planner` decided are needed
-(reverse_geocode, guide_store, web_search), runs them concurrently, and
-merges the results into a single provenance-tagged evidence bundle for
-`narrate` to draw on.
+Gather node -- fans out to the sources `planner` decided are needed and
+merges the results into one evidence bundle for `narrate`.
 
-Each source call is wrapped individually so one failing source (a flaky
-API, a timeout) degrades that one entry rather than failing the whole
-turn -- `narrate` can still work with partial evidence, and `verify` will
-naturally catch any claim that outruns what was actually gathered.
+All heavy lifting is done by the city_guide engine (Overpass, Wikipedia,
+Wikidata, Tavily, guide store); this node only adapts the plan to engine
+calls and keeps per-source failures from killing the turn.
 """
 
 from __future__ import annotations
 
-import asyncio
 import logging
 from typing import Any
 
-from tools.geo.reverse_geocode import reverse_geocode
-from tools.guide_store import query_guides
-from tools.web_search import search as web_search
-
-from graph.state import AgentState
+from agent.graph.state import AgentState
+from city_guide.narrator import build_evidence
+from city_guide.pipeline import gather as engine_gather
+from city_guide.pipeline import warm_context
+from city_guide.store import GuideStore
 
 logger = logging.getLogger(__name__)
 
-
-async def _call_reverse_geocode(lat: float, lon: float) -> dict:
-    try:
-        data = await reverse_geocode(lat, lon)
-        return {"ok": True, "data": data, "error": None}
-    except Exception as exc:  # noqa: BLE001 -- any source failure should degrade, not propagate
-        logger.warning("gather: reverse_geocode failed: %s", exc)
-        return {"ok": False, "data": None, "error": str(exc)}
-
-
-async def _call_guide_store(lat: float, lon: float, query: str | None, radius_m: int) -> dict:
-    try:
-        data = await query_guides(lat, lon, query=query, radius_m=radius_m)
-        return {"ok": True, "data": data, "error": None}
-    except Exception as exc:  # noqa: BLE001
-        logger.warning("gather: guide_store failed: %s", exc)
-        return {"ok": False, "data": None, "error": str(exc)}
-
-
-async def _call_web_search(query: str) -> dict:
-    try:
-        data = await web_search(query)
-        return {"ok": True, "data": data, "error": None}
-    except Exception as exc:  # noqa: BLE001
-        logger.warning("gather: web_search failed: %s", exc)
-        return {"ok": False, "data": None, "error": str(exc)}
+DEFAULT_GUIDE_RADIUS_M = 750
 
 
 async def run(state: AgentState) -> dict[str, Any]:
@@ -59,53 +30,31 @@ async def run(state: AgentState) -> dict[str, Any]:
 
     plan = state.get("plan")
     query = state.get("query")
-
     if plan is None or query is None:
         return {"error": "gather: missing plan or query in state -- planner must run first."}
 
     location = query.get("location")
+    if not location:
+        # No pin -> nothing geo to gather; narrate answers from the query alone.
+        return {"evidence": None}
 
-    # Build the set of concurrent calls based on the plan. Each entry pairs
-    # a source name with its coroutine, so results can be matched back up
-    # after asyncio.gather regardless of completion order.
-    tasks: list[tuple[str, Any]] = []
+    lat, lon = location["lat"], location["lon"]
+    interest = query.get("text")
 
-    if plan.get("reverse_geocode") and location:
-        tasks.append(("reverse_geocode", _call_reverse_geocode(location["lat"], location["lon"])))
+    # reverse_geocode: no provider wired yet -- the wiki/overpass data names the area anyway
+    display, analysis, data = await engine_gather(lat, lon, interest=interest, with_web=bool(plan.get("web_search")))
 
-    guide_store_plan = plan.get("guide_store")
-    if guide_store_plan and location:
-        tasks.append(
-            (
-                "guide_store",
-                _call_guide_store(
-                    location["lat"],
-                    location["lon"],
-                    query=guide_store_plan.get("query"),
-                    radius_m=guide_store_plan.get("radius_m", 750),
-                ),
-            )
-        )
+    baked = []
+    guide_plan = plan.get("guide_store")
+    if guide_plan:
+        baked = warm_context(GuideStore(), lat, lon, guide_plan.get("radius_m", DEFAULT_GUIDE_RADIUS_M))
 
-    web_search_plan = plan.get("web_search")
-    if web_search_plan and web_search_plan.get("query"):
-        tasks.append(("web_search", _call_web_search(web_search_plan["query"])))
-
-    if not tasks:
-        # Nothing to gather (e.g. no location and no text worth searching).
-        # Not an error -- narrate can still respond from the query alone,
-        # though it will have very little to work with.
-        return {"evidence": {"reverse_geocode": None, "guide_store": None, "web_search": None}}
-
-    names, coros = zip(*tasks, strict=True)
-    results = await asyncio.gather(*coros)
-
-    evidence: dict[str, dict | None] = {
-        "reverse_geocode": None,
-        "guide_store": None,
-        "web_search": None,
+    evidence = build_evidence(display, analysis, data.tavily_snippets, baked)
+    return {
+        "evidence": evidence,
+        "evidence_stats": {
+            "places": len(display.places),
+            "web_snippets": len(data.tavily_snippets or []),
+            "baked_stories": len(baked),
+        },
     }
-    for name, result in zip(names, results, strict=True):
-        evidence[name] = result
-
-    return {"evidence": evidence}

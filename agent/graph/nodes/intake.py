@@ -20,7 +20,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from graph.state import AgentState
+from agent.graph.state import AgentState
 
 # Sanity bounds -- catches obviously malformed payloads (e.g. swapped
 # lat/lon, stray (0, 0) defaults) before they propagate downstream.

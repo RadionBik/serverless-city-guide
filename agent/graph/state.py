@@ -42,24 +42,31 @@ class AgentState(TypedDict, total=False):
     plan: dict | None
 
     # ---- gather output ----
-    # Merged, provenance-tagged evidence bundle from geo sources, web search,
-    # and the guide store. Will become `schemas.evidence.EvidenceBundle`.
-    evidence: dict | None
+    # Assembled evidence corpus (city_guide.narrator.build_evidence output) —
+    # the storyteller's user message AND the judge's ground truth.
+    evidence: str | None
 
     # ---- future: memory / personalization (read side) ----
     # Retrieved user preferences/topics, injected into the narrate prompt.
     # Will become `schemas.profile.UserProfile`.
     user_profile: dict | None
 
+    # ---- gather output (continued) ----
+    # Counts for logging/UX ("found 12 places, 3 web snippets, 2 baked stories")
+    evidence_stats: dict | None
+
     # ---- narrate output ----
     narration: str | None
+    # The exact prompt messages the story came from — verify feeds them back
+    # to city_guide's regenerate step.
+    narrator_messages: list[dict] | None
 
     # ---- verify output ----
-    # List of atomic claims extracted from `narration`, each checked against
-    # `evidence`, e.g. [{"claim": "...", "supported": True, "source": "..."}]
-    verification: list[dict] | None
-    verify_decision: VerifyDecision | None
-    retry_count: int
+    # Summary line of city_guide's claim report ("9 supported, 1 uncertain...");
+    # retry + strip happen inside verify_and_repair, so no graph-level loop.
+    verify_report: str | None
+    verify_regenerated: bool
+    decision: VerifyDecision | None
 
     # ---- reply output ----
     reply: str | None
@@ -87,11 +94,13 @@ def initial_state(
         query=None,
         plan=None,
         evidence=None,
+        evidence_stats=None,
         user_profile=None,
         narration=None,
-        verification=None,
-        verify_decision=None,
-        retry_count=0,
+        narrator_messages=None,
+        verify_report=None,
+        verify_regenerated=False,
+        decision=None,
         reply=None,
         error=None,
         messages=[],

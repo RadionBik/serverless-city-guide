@@ -1,8 +1,8 @@
 # graph/build_graph.py (shape, not final code)
 from langgraph.graph import END, StateGraph
 
-from graph.nodes import gather, intake, narrate, planner, reply, verify
-from graph.state import AgentState
+from agent.graph.nodes import gather, intake, narrate, planner, reply, verify
+from agent.graph.state import AgentState
 
 
 def build_graph():

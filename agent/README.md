@@ -1,67 +1,49 @@
-# Travel Companion — Agentic Real-Time Travel Agent
+# Agent — conversational shell over the city_guide engine
 
-Pipeline: `intake → planner → gather (parallel) → narrate → verify → reply`,
-with a future async `memory` writer branching off after reply.
+LangGraph pipeline: `intake → planner → gather → narrate → verify → reply`.
 
-One storyteller LLM endpoint (Nebius), one orchestration graph. Planner and
-verify are designed to run on a cheaper/faster model (also via Nebius) or
-rule-based logic — see `NEBIUS_UTILITY_MODEL` in `.env`.
-
-## Structure
+The graph owns conversation concerns (normalizing free-text + pin input,
+deciding which sources a request needs, formatting the reply). All heavy
+lifting delegates to the `city_guide` engine: gathering (Overpass,
+Wikipedia, Wikidata, Tavily, guide store), storytelling, and the
+verify → regenerate → strip grounding loop.
 
 ```
-travel-companion/
-├── main.py                  # entry point — wires graph + runs a turn
-├── .env / .env.example      # secrets & config (Nebius keys, provider keys)
-├── requirements.txt
-│
-├── config/
-│   └── settings.py          # loads/validates .env via pydantic-settings
-│
-├── schemas/                 # typed data contracts shared across nodes
-│   ├── query.py             # normalized user query (text/coords/pin/intent)
-│   ├── evidence.py          # gathered evidence bundle + provenance tags
-│   └── profile.py           # user preference/profile schema (future memory)
-│
+agent/
+├── main.py                  # compiles the graph
 ├── graph/
-│   ├── state.py             # shared graph state object (TypedDict/pydantic)
-│   ├── build_graph.py       # compiles the LangGraph StateGraph + edges
+│   ├── state.py             # shared AgentState (TypedDict)
+│   ├── build_graph.py       # LangGraph StateGraph wiring
 │   └── nodes/
-│       ├── intake.py        # normalize raw input -> Query
-│       ├── planner.py       # decide which gather sources are needed
-│       ├── gather.py        # fan-out/fan-in calls to tools/*
-│       ├── narrate.py       # single storyteller Nebius call
-│       ├── verify.py        # claim-check narration against evidence
-│       └── reply.py         # format final response to client
-│
-├── tools/                   # gather-step data sources
-│   ├── geo/
-│   │   ├── reverse_geocode.py
-│   │   └── places.py
-│   ├── web_search.py
-│   ├── guide_store.py       # geo-keyed guide/knowledge retrieval
-│   └── user_profile_store.py# future: user preference retrieval
-│
-├── llm/
-│   ├── nebius_client.py     # thin wrapper around Nebius (OpenAI-compatible)
-│   └── prompts/             # prompt templates per node
-│       ├── planner_prompt.py
-│       ├── narrate_prompt.py
-│       ├── verify_prompt.py
-│       └── memory_extraction_prompt.py
-│
-├── memory/                  # future: async, off-critical-path
-│   ├── extractor.py         # post-turn preference/topic extraction
-│   └── store.py             # persistence for user profiles
-│
-└── tests/
+│       ├── intake.py        # normalize raw input -> query
+│       ├── planner.py       # which sources to call (LLM w/ strict schema, heuristic fallback)
+│       ├── gather.py        # -> city_guide.pipeline.gather + guide store
+│       ├── narrate.py       # -> city_guide.narrator
+│       ├── verify.py        # -> city_guide.verifier.verify_and_repair
+│       └── reply.py         # final text + verification summary
+└── llm/prompts/planner_prompt.py
 ```
 
-## Notes
+Install: `uv sync --extra agent`. Run a turn:
 
-- All Nebius calls route through `llm/nebius_client.py` — single place to
-  swap models/endpoints.
-- `tools/user_profile_store.py` and `memory/` are scaffolded but not wired
-  into `graph/build_graph.py` yet; they plug into `gather` (read) and a
-  post-`reply` async branch (write) without changing the graph shape.
-- Copy `.env.example` to `.env` and fill in keys before running.
+```python
+from agent.graph.build_graph import build_graph
+from agent.graph.state import initial_state
+
+graph = build_graph()
+result = await graph.ainvoke(initial_state(
+    raw_text="what is interesting around here?",
+    coords={"lat": 51.5117, "lon": -0.1240},
+))
+print(result["reply"])
+```
+
+Open design threads (deliberately deferred):
+- **Streaming narration** — `on_token` callback needs a streaming method on
+  `EndpointBackend`.
+- **Two-tier verify** — deterministic citation-tag check before the LLM
+  judge, as a cost optimization.
+- **Memory / user profiles** — post-reply preference extraction; pruned as
+  empty scaffolding, design lives in the PR #2 discussion.
+- **reverse_geocode** — no provider wired; wiki/overpass data names the
+  area for now.
