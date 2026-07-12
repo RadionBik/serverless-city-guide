@@ -30,13 +30,14 @@ from __future__ import annotations
 import json
 import logging
 import re
-from typing import Any, Optional
+from typing import Any
 
-from graph.state import AgentState, VerifyDecision
 from llm.nebius_client import get_nebius_client
 from llm.prompts.citation import TAG_RE as _TAG_RE
 from llm.prompts.citation import format_evidence as _format_evidence
 from llm.prompts.verify_prompt import SYSTEM_PROMPT, build_user_prompt
+
+from graph.state import AgentState, VerifyDecision
 
 logger = logging.getLogger(__name__)
 
@@ -46,10 +47,10 @@ MAX_VERIFY_RETRIES = 1
 # a four-digit year, a currency amount, a clock time, or opening/closing
 # language paired with a digit (hours, days, etc.).
 _RISKY_PATTERNS = [
-    re.compile(r"\b(1[0-9]{3}|20[0-9]{2})\b"),                 # years
-    re.compile(r"[£$€]\s?\d"),                                  # currency
-    re.compile(r"\b\d{1,2}(:\d{2})?\s?(am|pm|AM|PM)\b"),        # clock time
-    re.compile(r"\b(open|close[ds]?|hours?)\b.{0,15}\d", re.I), # hours-ish
+    re.compile(r"\b(1[0-9]{3}|20[0-9]{2})\b"),  # years
+    re.compile(r"[£$€]\s?\d"),  # currency
+    re.compile(r"\b\d{1,2}(:\d{2})?\s?(am|pm|AM|PM)\b"),  # clock time
+    re.compile(r"\b(open|close[ds]?|hours?)\b.{0,15}\d", re.I),  # hours-ish
 ]
 
 _SENTENCE_SPLIT_RE = re.compile(r"(?<=[.!?])\s+")
@@ -59,7 +60,7 @@ def _extract_used_tags(narration: str) -> set[str]:
     return set(_TAG_RE.findall(narration))
 
 
-def _valid_tags_from_evidence(evidence: Optional[dict]) -> set[str]:
+def _valid_tags_from_evidence(evidence: dict | None) -> set[str]:
     """Which tags the narration would be entitled to cite, given what was
     actually and successfully gathered."""
     if not evidence:
@@ -82,13 +83,10 @@ def _valid_tags_from_evidence(evidence: Optional[dict]) -> set[str]:
     return valid
 
 
-def _has_successful_evidence(evidence: Optional[dict]) -> bool:
+def _has_successful_evidence(evidence: dict | None) -> bool:
     if not evidence:
         return False
-    return any(
-        source and source.get("ok") and source.get("data")
-        for source in evidence.values()
-    )
+    return any(source and source.get("ok") and source.get("data") for source in evidence.values())
 
 
 def _split_sentences(narration: str) -> list[str]:
@@ -101,9 +99,7 @@ def _is_risky_untagged(sentence: str) -> bool:
     return any(pattern.search(sentence) for pattern in _RISKY_PATTERNS)
 
 
-async def _judge_risky_sentences(
-    evidence: Optional[dict], sentences: list[str]
-) -> list[dict]:
+async def _judge_risky_sentences(evidence: dict | None, sentences: list[str]) -> list[dict]:
     """
     Batched LLM judge for untagged-but-risky sentences. Returns a list of
     {"claim": sentence, "supported": bool | None, "reason": str}. A `None`
@@ -128,10 +124,7 @@ async def _judge_risky_sentences(
         results = {r["index"]: bool(r["grounded"]) for r in data.get("results", [])}
     except Exception as exc:  # noqa: BLE001
         logger.warning("verify: judge call/parse failed (%s); marking inconclusive", exc)
-        return [
-            {"claim": s, "supported": None, "reason": "judge_unavailable"}
-            for s in sentences
-        ]
+        return [{"claim": s, "supported": None, "reason": "judge_unavailable"} for s in sentences]
 
     out = []
     for i, s in enumerate(sentences, start=1):
@@ -186,10 +179,7 @@ async def run(state: AgentState) -> dict[str, Any]:
             # Nothing was successfully gathered, so a specific-looking
             # untagged claim has nothing to be grounded in -- no need to
             # spend a call finding that out.
-            verification.extend(
-                {"claim": s, "supported": False, "reason": "no_evidence_available"}
-                for s in risky
-            )
+            verification.extend({"claim": s, "supported": False, "reason": "no_evidence_available"} for s in risky)
 
     # ---- Decide retry vs reply ----
     has_unsupported = any(c["supported"] is False for c in verification) or bool(invalid_tags)

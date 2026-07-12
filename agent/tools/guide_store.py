@@ -10,13 +10,11 @@ chosen.
 
 from __future__ import annotations
 
-from typing import Optional
-
 
 async def query_guides(
     lat: float,
     lon: float,
-    query: Optional[str] = None,
+    query: str | None = None,
     radius_m: int = 750,
 ) -> list[dict]:
     """

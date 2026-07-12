@@ -12,7 +12,6 @@ call, to keep verify cheap.
 
 from __future__ import annotations
 
-
 SYSTEM_PROMPT = """\
 You are a fact-checking pass in a travel companion pipeline. You will be \
 given a bundle of evidence and a numbered list of sentences pulled from a \
@@ -42,8 +41,4 @@ etc.), mark it false.
 
 def build_user_prompt(evidence_block: str, sentences: list[str]) -> str:
     numbered = "\n".join(f"{i}. {s}" for i, s in enumerate(sentences, start=1))
-    return (
-        f"Evidence:\n{evidence_block}\n\n"
-        f"Sentences to check:\n{numbered}\n\n"
-        "Return the JSON result now."
-    )
+    return f"Evidence:\n{evidence_block}\n\nSentences to check:\n{numbered}\n\nReturn the JSON result now."

@@ -17,7 +17,7 @@ changing any node signatures.
 
 from __future__ import annotations
 
-from typing import Annotated, Any, Literal, Optional, TypedDict
+from typing import Annotated, Any, Literal, TypedDict
 
 from langgraph.graph.message import add_messages
 
@@ -26,46 +26,46 @@ VerifyDecision = Literal["retry", "reply"]
 
 class AgentState(TypedDict, total=False):
     # ---- raw input (set once, by the caller / intake) ----
-    raw_text: Optional[str]
-    coords: Optional[dict]       # {"lat": float, "lon": float}
-    pin: Optional[dict]          # dropped-pin payload, if distinct from coords
-    user_id: Optional[str]       # for future profile/memory lookup
+    raw_text: str | None
+    coords: dict | None  # {"lat": float, "lon": float}
+    pin: dict | None  # dropped-pin payload, if distinct from coords
+    user_id: str | None  # for future profile/memory lookup
 
     # ---- intake output ----
     # Normalized request: intent, location, freeform question, etc.
     # Will become `schemas.query.Query` once that schema exists.
-    query: Optional[dict]
+    query: dict | None
 
     # ---- planner output ----
     # Which gather sources to call and with what sub-queries, e.g.
     # {"reverse_geocode": True, "web_search": {"query": "..."}, "guide_store": {...}}
-    plan: Optional[dict]
+    plan: dict | None
 
     # ---- gather output ----
     # Merged, provenance-tagged evidence bundle from geo sources, web search,
     # and the guide store. Will become `schemas.evidence.EvidenceBundle`.
-    evidence: Optional[dict]
+    evidence: dict | None
 
     # ---- future: memory / personalization (read side) ----
     # Retrieved user preferences/topics, injected into the narrate prompt.
     # Will become `schemas.profile.UserProfile`.
-    user_profile: Optional[dict]
+    user_profile: dict | None
 
     # ---- narrate output ----
-    narration: Optional[str]
+    narration: str | None
 
     # ---- verify output ----
     # List of atomic claims extracted from `narration`, each checked against
     # `evidence`, e.g. [{"claim": "...", "supported": True, "source": "..."}]
-    verification: Optional[list[dict]]
-    verify_decision: Optional[VerifyDecision]
+    verification: list[dict] | None
+    verify_decision: VerifyDecision | None
     retry_count: int
 
     # ---- reply output ----
-    reply: Optional[str]
+    reply: str | None
 
     # ---- cross-cutting ----
-    error: Optional[str]
+    error: str | None
     # Running chat history, if the agent is used conversationally rather
     # than as single-shot turns. `add_messages` handles append-merge
     # semantics the way LangGraph expects.
@@ -73,10 +73,10 @@ class AgentState(TypedDict, total=False):
 
 
 def initial_state(
-    raw_text: Optional[str] = None,
-    coords: Optional[dict] = None,
-    pin: Optional[dict] = None,
-    user_id: Optional[str] = None,
+    raw_text: str | None = None,
+    coords: dict | None = None,
+    pin: dict | None = None,
+    user_id: str | None = None,
 ) -> AgentState:
     """Construct a fresh state for a single turn."""
     return AgentState(

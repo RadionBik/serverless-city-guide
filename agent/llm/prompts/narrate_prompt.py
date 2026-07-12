@@ -13,8 +13,6 @@ Two things this prompt has to get right, because `verify` depends on them:
 
 from __future__ import annotations
 
-from typing import Optional
-
 from llm.prompts.citation import format_evidence as _format_evidence
 
 SYSTEM_PROMPT = """\
@@ -48,14 +46,12 @@ entry.
 
 def build_user_prompt(
     query: dict,
-    evidence: Optional[dict],
-    user_profile: Optional[dict] = None,
+    evidence: dict | None,
+    user_profile: dict | None = None,
 ) -> str:
     text = query.get("text") or "(no specific question -- describe what's nearby)"
     location = query.get("location")
-    loc_desc = (
-        f"lat={location['lat']}, lon={location['lon']}" if location else "(none provided)"
-    )
+    loc_desc = f"lat={location['lat']}, lon={location['lon']}" if location else "(none provided)"
 
     parts = [
         f"User's request: {text}",

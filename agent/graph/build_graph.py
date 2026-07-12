@@ -1,7 +1,9 @@
 # graph/build_graph.py (shape, not final code)
-from langgraph.graph import StateGraph, END
+from langgraph.graph import END, StateGraph
+
+from graph.nodes import gather, intake, narrate, planner, reply, verify
 from graph.state import AgentState
-from graph.nodes import intake, planner, gather, narrate, verify, reply
+
 
 def build_graph():
     g = StateGraph(AgentState)
@@ -22,7 +24,7 @@ def build_graph():
 
     g.add_conditional_edges(
         "verify",
-        verify.route,          # returns "retry" or "reply"
+        verify.route,  # returns "retry" or "reply"
         {"retry": "gather", "reply": "reply"},
     )
     g.add_edge("reply", END)

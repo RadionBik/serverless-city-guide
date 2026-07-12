@@ -19,11 +19,12 @@ from __future__ import annotations
 
 import json
 import logging
-from typing import Any, Optional
+from typing import Any
 
-from graph.state import AgentState
 from llm.nebius_client import get_nebius_client
 from llm.prompts.planner_prompt import SYSTEM_PROMPT, build_user_prompt
+
+from graph.state import AgentState
 
 logger = logging.getLogger(__name__)
 
@@ -40,11 +41,7 @@ def _heuristic_plan(query: dict) -> dict:
 
     return {
         "reverse_geocode": has_location,
-        "guide_store": (
-            {"query": query.get("text"), "radius_m": DEFAULT_GUIDE_RADIUS_M}
-            if has_location
-            else None
-        ),
+        "guide_store": ({"query": query.get("text"), "radius_m": DEFAULT_GUIDE_RADIUS_M} if has_location else None),
         "web_search": {"query": query["text"]} if has_text else None,
     }
 
@@ -102,7 +99,7 @@ async def run(state: AgentState) -> dict[str, Any]:
     if state.get("error"):
         return {}
 
-    query: Optional[dict] = state.get("query")
+    query: dict | None = state.get("query")
     if not query:
         return {"error": "planner: no query in state -- intake must run first."}
 

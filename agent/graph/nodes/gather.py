@@ -14,12 +14,13 @@ from __future__ import annotations
 
 import asyncio
 import logging
-from typing import Any, Optional
+from typing import Any
 
-from graph.state import AgentState
 from tools.geo.reverse_geocode import reverse_geocode
 from tools.guide_store import query_guides
 from tools.web_search import search as web_search
+
+from graph.state import AgentState
 
 logger = logging.getLogger(__name__)
 
@@ -33,9 +34,7 @@ async def _call_reverse_geocode(lat: float, lon: float) -> dict:
         return {"ok": False, "data": None, "error": str(exc)}
 
 
-async def _call_guide_store(
-    lat: float, lon: float, query: Optional[str], radius_m: int
-) -> dict:
+async def _call_guide_store(lat: float, lon: float, query: str | None, radius_m: int) -> dict:
     try:
         data = await query_guides(lat, lon, query=query, radius_m=radius_m)
         return {"ok": True, "data": data, "error": None}
@@ -62,9 +61,7 @@ async def run(state: AgentState) -> dict[str, Any]:
     query = state.get("query")
 
     if plan is None or query is None:
-        return {
-            "error": "gather: missing plan or query in state -- planner must run first."
-        }
+        return {"error": "gather: missing plan or query in state -- planner must run first."}
 
     location = query.get("location")
 
@@ -74,9 +71,7 @@ async def run(state: AgentState) -> dict[str, Any]:
     tasks: list[tuple[str, Any]] = []
 
     if plan.get("reverse_geocode") and location:
-        tasks.append(
-            ("reverse_geocode", _call_reverse_geocode(location["lat"], location["lon"]))
-        )
+        tasks.append(("reverse_geocode", _call_reverse_geocode(location["lat"], location["lon"])))
 
     guide_store_plan = plan.get("guide_store")
     if guide_store_plan and location:
@@ -102,15 +97,15 @@ async def run(state: AgentState) -> dict[str, Any]:
         # though it will have very little to work with.
         return {"evidence": {"reverse_geocode": None, "guide_store": None, "web_search": None}}
 
-    names, coros = zip(*tasks)
+    names, coros = zip(*tasks, strict=True)
     results = await asyncio.gather(*coros)
 
-    evidence: dict[str, Optional[dict]] = {
+    evidence: dict[str, dict | None] = {
         "reverse_geocode": None,
         "guide_store": None,
         "web_search": None,
     }
-    for name, result in zip(names, results):
+    for name, result in zip(names, results, strict=True):
         evidence[name] = result
 
     return {"evidence": evidence}

@@ -19,23 +19,22 @@ model, the callback could be replaced with LangGraph's native event stream.
 from __future__ import annotations
 
 import logging
-from typing import Any, Awaitable, Callable, Optional
+from collections.abc import Awaitable, Callable
+from typing import Any
 
-from graph.state import AgentState
 from llm.nebius_client import get_nebius_client
 from llm.prompts.narrate_prompt import SYSTEM_PROMPT, build_user_prompt
+
+from graph.state import AgentState
 
 logger = logging.getLogger(__name__)
 
 OnToken = Callable[[str], Awaitable[None]]
 
-FALLBACK_NARRATION = (
-    "I'm having trouble putting that together right now -- mind trying again "
-    "in a moment?"
-)
+FALLBACK_NARRATION = "I'm having trouble putting that together right now -- mind trying again in a moment?"
 
 
-async def run(state: AgentState, on_token: Optional[OnToken] = None) -> dict[str, Any]:
+async def run(state: AgentState, on_token: OnToken | None = None) -> dict[str, Any]:
     """
     LangGraph node entry point.
 

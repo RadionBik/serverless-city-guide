@@ -20,18 +20,16 @@ from __future__ import annotations
 import logging
 from typing import Any
 
-from graph.state import AgentState
 from llm.prompts.citation import strip_citation_tags
+
+from graph.state import AgentState
 
 logger = logging.getLogger(__name__)
 
-GENERIC_FAILURE_REPLY = (
-    "Sorry, I ran into a problem putting that together. Mind trying again?"
-)
+GENERIC_FAILURE_REPLY = "Sorry, I ran into a problem putting that together. Mind trying again?"
 
 UNCERTAINTY_CAVEAT = (
-    "\n\n(A couple of specific details above I couldn't fully confirm -- "
-    "worth double-checking locally.)"
+    "\n\n(A couple of specific details above I couldn't fully confirm -- worth double-checking locally.)"
 )
 
 

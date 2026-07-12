@@ -32,10 +32,11 @@ from __future__ import annotations
 
 import logging
 import os
-from typing import AsyncIterator, Iterable, Literal, Optional
+from collections.abc import AsyncIterator, Iterable
+from typing import Literal
 
 from dotenv import load_dotenv
-from openai import AsyncOpenAI, APIConnectionError, APIError, APITimeoutError
+from openai import APIConnectionError, APIError, APITimeoutError, AsyncOpenAI
 
 load_dotenv()
 
@@ -69,36 +70,26 @@ class NebiusClient:
 
     def __init__(
         self,
-        api_key: Optional[str] = None,
-        base_url: Optional[str] = None,
-        storyteller_model: Optional[str] = None,
-        utility_model: Optional[str] = None,
+        api_key: str | None = None,
+        base_url: str | None = None,
+        storyteller_model: str | None = None,
+        utility_model: str | None = None,
         timeout_s: float = DEFAULT_TIMEOUT_S,
         max_retries: int = DEFAULT_MAX_RETRIES,
     ) -> None:
         self.api_key = api_key or os.getenv("NEBIUS_API_KEY")
         if not self.api_key:
-            raise NebiusConfigError(
-                "NEBIUS_API_KEY is not set. Add it to your .env file."
-            )
+            raise NebiusConfigError("NEBIUS_API_KEY is not set. Add it to your .env file.")
 
         self.base_url = base_url or os.getenv("NEBIUS_BASE_URL", DEFAULT_BASE_URL)
 
-        self.storyteller_model = storyteller_model or os.getenv(
-            "NEBIUS_STORYTELLER_MODEL"
-        )
+        self.storyteller_model = storyteller_model or os.getenv("NEBIUS_STORYTELLER_MODEL")
         if not self.storyteller_model:
-            raise NebiusConfigError(
-                "NEBIUS_STORYTELLER_MODEL is not set. Add it to your .env file."
-            )
+            raise NebiusConfigError("NEBIUS_STORYTELLER_MODEL is not set. Add it to your .env file.")
 
         # Utility model is optional -- fall back to the storyteller model
         # if unset, so planner/verify/memory-extraction work out of the box.
-        self.utility_model = (
-            utility_model
-            or os.getenv("NEBIUS_UTILITY_MODEL")
-            or self.storyteller_model
-        )
+        self.utility_model = utility_model or os.getenv("NEBIUS_UTILITY_MODEL") or self.storyteller_model
 
         self._client = AsyncOpenAI(
             api_key=self.api_key,
@@ -115,8 +106,8 @@ class NebiusClient:
         messages: Iterable[dict],
         role: Role = "storyteller",
         temperature: float = 0.7,
-        max_tokens: Optional[int] = None,
-        response_format: Optional[dict] = None,
+        max_tokens: int | None = None,
+        response_format: dict | None = None,
         **kwargs,
     ) -> str:
         """
@@ -152,7 +143,7 @@ class NebiusClient:
         messages: Iterable[dict],
         role: Role = "storyteller",
         temperature: float = 0.7,
-        max_tokens: Optional[int] = None,
+        max_tokens: int | None = None,
         **kwargs,
     ) -> AsyncIterator[str]:
         """
@@ -179,9 +170,7 @@ class NebiusClient:
                 if delta:
                     yield delta
         except (APIConnectionError, APITimeoutError) as exc:
-            logger.error(
-                "Nebius streaming connection error (model=%s): %s", model, exc
-            )
+            logger.error("Nebius streaming connection error (model=%s): %s", model, exc)
             raise
         except APIError as exc:
             logger.error("Nebius streaming API error (model=%s): %s", model, exc)
@@ -191,14 +180,14 @@ class NebiusClient:
         """Release the underlying HTTP client / connection pool."""
         await self._client.close()
 
-    async def __aenter__(self) -> "NebiusClient":
+    async def __aenter__(self) -> NebiusClient:
         return self
 
     async def __aexit__(self, *exc_info) -> None:
         await self.close()
 
 
-_default_client: Optional[NebiusClient] = None
+_default_client: NebiusClient | None = None
 
 
 def get_nebius_client() -> NebiusClient:
