@@ -28,6 +28,9 @@ uv run guide.py intro 51.5117 -0.1240
 # same story without the fact-check pass (comparison demo)
 uv run guide.py intro 51.5117 -0.1240 --no-verify
 
+# see the exact evidence the LLM gets (nothing else reaches the prompt)
+uv run guide.py intro -o prompt 51.5117 -0.1240
+
 # or just ask in free text — a small LangGraph agent (agent/) turns your words
 # into the engine settings (focus, theme, radius, length) plus a free-form style
 uv run guide.py ask "what's the food story here? keep it short" 51.5055 -0.0910   # Borough Market

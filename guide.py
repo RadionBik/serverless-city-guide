@@ -207,24 +207,7 @@ def main() -> None:
         description="Serverless city guide — every place has a story",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""\
-examples:
-  # live story about what's around the pin (paste coords straight from Google Maps)
-  guide.py intro 51.5117 -0.1240
-  guide.py intro -r 500 -d short --no-verify 51.5117 -0.1240
-  guide.py intro -o prompt 51.5117 -0.1240         # see the evidence the LLM gets
-
-  # plan a walking tour (writes tour.json + trace/curation.json)
-  guide.py tour -i "street art" -L 1km 51.5245 -0.0786
-  guide.py tour -L 2km --open 51.5117 -0.1240      # one-way instead of circular
-  guide.py tour -L 1km --local 51.5245 -0.0786     # plan + bake in one go
-
-  # free-text question — the agent picks theme/length/language for you
-  guide.py ask "what's the food story here? keep it short" 51.5055 -0.0910   # Borough Market
-
-  # read a baked guide
-  guide.py status <guide_id>
-  guide.py show <guide_id>
-
+examples: see the README quick start (coords paste straight from Google Maps, trailing comma OK)
 per-command flags: guide.py <command> -h
 backend: LLM_BASE_URL in .env (empty = Nebius Token Factory, needs NEBIUS_API_KEY)
 debug:   LOG_LEVEL=DEBUG for full request logs; bake audit trail in guides/<id>/trace/
