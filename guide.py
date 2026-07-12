@@ -150,6 +150,12 @@ async def cmd_ask(args: argparse.Namespace) -> None:
 
     _status("Thinking about your question...")
     result = await build_graph().ainvoke(initial_state(raw_text=args.text, coords={"lat": args.lat, "lon": args.lon}))
+    settings = result.get("settings")
+    if settings is not None:
+        _status(f"Plan: {settings.model_dump_json(exclude_none=True)}")
+    stats = result.get("evidence_stats")
+    if stats:
+        _status(f"Evidence: {stats}")
     print(result["reply"])
 
 
