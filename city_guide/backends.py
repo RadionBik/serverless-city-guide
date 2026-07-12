@@ -169,16 +169,25 @@ class OfflineBackend:
         from vllm import LLM  # noqa: PLC0415 — heavyweight, job-only import
 
         self.model = model or get_llm_model()
-        self.llm = LLM(model=self.model)
+        self.llm = LLM(model=self.model, max_model_len=LlmConfig.max_model_len)
 
     def _generate_sync(self, batches: list[list[Message]], schema: type[T], temperature: float) -> list[T]:
         from vllm import SamplingParams
-        from vllm.sampling_params import GuidedDecodingParams
+
+        schema_json = _openai_strict_schema(schema.model_json_schema())
+        try:  # vLLM >= 0.11 renamed guided decoding to structured outputs
+            from vllm.sampling_params import StructuredOutputsParams
+
+            constraint = {"structured_outputs": StructuredOutputsParams(json=schema_json)}
+        except ImportError:
+            from vllm.sampling_params import GuidedDecodingParams
+
+            constraint = {"guided_decoding": GuidedDecodingParams(json=schema_json)}
 
         params = SamplingParams(
             max_tokens=LlmConfig.max_tokens,
             temperature=temperature,
-            guided_decoding=GuidedDecodingParams(json=_openai_strict_schema(schema.model_json_schema())),
+            **constraint,
         )
         outputs = self.llm.chat(batches, params)
         results: list[T] = []

@@ -112,6 +112,9 @@ TavilyConfig = _TavilyConfig()
 @dataclass(frozen=True)
 class _LlmConfig:
     max_tokens: int = 4096
+    # Qwen3-32B default seq len (40960) needs more KV cache than one H100 80GB has
+    # left after weights; 16k matches the endpoint's --max-model-len.
+    max_model_len: int = 16384
     story_temperature: float = 0.8
     judge_temperature: float = 0.1
     curator_temperature: float = 0.3
