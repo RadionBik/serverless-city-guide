@@ -1,6 +1,6 @@
 # Every place has a story — building a hallucination-proof city guide on Nebius Serverless
 
-*Built solo, mostly in one evening, for the Nebius Serverless AI Builders Challenge.*
+*Built for the Nebius Serverless AI Builders Challenge.*
 *Code: https://github.com/RadionBik/serverless-city-guide*
 
 ## The problem
