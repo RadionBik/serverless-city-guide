@@ -14,6 +14,8 @@ Wikidata, Tavily) — failed claims get regenerated, then stripped. Compare with
 
 Built for the [Nebius Serverless AI Builders Challenge](https://nebius.com/serverless-ai-builders-challenge).
 Design, grounding mechanics, audit trail: [ARCHITECTURE.md](ARCHITECTURE.md).
+There is also a conversational agent shell (LangGraph) over the same engine:
+[agent/README.md](agent/README.md).
 
 ## Quick start
 
