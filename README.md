@@ -14,8 +14,6 @@ Wikidata, Tavily) — failed claims get regenerated, then stripped. Compare with
 
 Built for the [Nebius Serverless AI Builders Challenge](https://nebius.com/serverless-ai-builders-challenge).
 Design, grounding mechanics, audit trail: [ARCHITECTURE.md](ARCHITECTURE.md).
-There is also a conversational agent shell (LangGraph) over the same engine:
-[agent/README.md](agent/README.md).
 
 ## Quick start
 
@@ -24,17 +22,24 @@ uv sync
 cp .env.example .env      # set LLM_BASE_URL, or just NEBIUS_API_KEY to use
                           # Nebius Token Factory as the dev fallback
 
-# live story about what's around a pin
-uv run guide.py intro 52.4986 13.4194
+# live story about what's around a pin (Covent Garden)
+uv run guide.py intro 51.5117 -0.1240
 
 # same story without the fact-check pass (comparison demo)
-uv run guide.py intro 52.4986 13.4194 --no-verify
+uv run guide.py intro 51.5117 -0.1240 --no-verify
+
+# see the exact evidence the LLM gets (nothing else reaches the prompt)
+uv run guide.py intro -o prompt 51.5117 -0.1240
+
+# or just ask in free text — a small LangGraph agent (agent/) turns your words
+# into the engine settings (focus, theme, radius, length) plus a free-form style
+uv run guide.py ask "what's the food story here? keep it short" 51.5055 -0.0910   # Borough Market
 
 # 1 km circular walking tour, baked via the endpoint (no job)
-uv run guide.py tour -i "street art" -L 1km --local 52.4986 13.4194
+uv run guide.py tour -i "street art" -L 1km --local 51.5245 -0.0786   # Shoreditch
 
 # or bake it as a Nebius job
-uv run guide.py tour -i "street art" -L 1km 52.4986 13.4194
+uv run guide.py tour -i "street art" -L 1km 51.5245 -0.0786
 ./scripts/submit_prebake.sh guides/<guide_id>/tour.json
 uv run guide.py show <guide_id>
 ```

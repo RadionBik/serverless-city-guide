@@ -44,9 +44,10 @@ async def narrate(
     language: Language = Language.EN,
     theme: Theme = Theme.DEFAULT,
     verbosity: Verbosity = Verbosity.FULL,
+    style: str | None = None,
 ) -> tuple[str, list[Message]]:
     """One live story. Returns (text, messages) — messages are kept for the regenerate path."""
-    system = build_storyteller_system(language, theme=theme, verbosity=verbosity)
+    system = build_storyteller_system(language, theme=theme, verbosity=verbosity, style=style)
     messages = build_story_messages(system, evidence)
     response = await backend.generate(messages, StoryResponse, temperature=LlmConfig.story_temperature)
     return response.text, messages
