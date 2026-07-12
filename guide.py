@@ -144,11 +144,9 @@ async def cmd_tour(args: argparse.Namespace) -> None:
 
 
 async def cmd_ask(args: argparse.Namespace) -> None:
-    try:
-        from agent.graph import build_graph
-        from agent.state import initial_state
-    except ImportError:
-        sys.exit("The agent extra is not installed. Run: uv sync --extra agent")
+    # Lazy import — keeps langgraph off the startup path of every other command.
+    from agent.graph import build_graph
+    from agent.state import initial_state
 
     _status("Thinking about your question...")
     result = await build_graph().ainvoke(initial_state(raw_text=args.text, coords={"lat": args.lat, "lon": args.lon}))
@@ -214,7 +212,7 @@ examples:
   guide.py tour -L 2km --open 51.5117 -0.1240      # one-way instead of circular
   guide.py tour -L 1km --local 54.4556 -2.1603     # plan + bake in one go
 
-  # free-text question — the agent picks theme/length/language (uv sync --extra agent)
+  # free-text question — the agent picks theme/length/language for you
   guide.py ask "what's the food story here? keep it short" 51.5117 -0.1240
 
   # read a baked guide

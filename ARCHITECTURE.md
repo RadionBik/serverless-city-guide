@@ -48,6 +48,19 @@ CLI sends coordinates. Pipeline:
 
 The CLI is thin glue, no GPU, runs anywhere. The endpoint is the only served compute.
 
+### Free-text shell: the agent
+
+`guide.py ask "any dark history here? keep it short" LAT LON` runs a small
+LangGraph pipeline (`agent/`): `intake → plan → gather → narrate → verify → reply`.
+The agent's one real decision is the **plan** node: a strict-JSON LLM call
+turns the free text into the same engine settings the CLI takes as flags —
+theme, verbosity, language, radius (clamped in code), web search, interest.
+Every other node delegates to the engine above. Planning failure degrades to
+the CLI defaults; no node failure kills the turn.
+
+Deferred on purpose: streaming narration, a cheap pre-check before the LLM
+judge, multi-turn memory (chat history is carried in state, not yet used).
+
 ## Tour path: curate → route → bake
 
 One model, three roles: **storyteller** (writes), **judge** (checks),
@@ -162,7 +175,12 @@ inference, same model, same OpenAI-compatible protocol).
 serverless-city-guide/
 ├── ARCHITECTURE.md / README.md / LICENSE / pyproject.toml / .env.example
 ├── Dockerfile                  # job image: vLLM base + this package
-├── guide.py                    # CLI: intro | tour | status | show
+├── guide.py                    # CLI: intro | ask | tour | status | show
+├── agent/
+│   ├── state.py                # AgentState + GuideSettings (the plan node's LLM schema)
+│   ├── prompts.py              # settings-planner prompt
+│   ├── nodes.py                # intake, plan, gather, narrate, verify, reply
+│   └── graph.py                # LangGraph wiring
 ├── scripts/
 │   ├── deploy_endpoint.sh      # nebius CLI: create the endpoint
 │   └── submit_prebake.sh       # nebius CLI: submit the job

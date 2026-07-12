@@ -5,12 +5,10 @@ from typing import Any
 
 import pytest
 
-pytest.importorskip("langgraph")
-
-from agent import nodes  # noqa: E402
-from agent.graph import build_graph  # noqa: E402
-from agent.state import GuideSettings, initial_state  # noqa: E402
-from city_guide.types import StoryResponse, Theme, Verbosity, VerifyReport  # noqa: E402
+from agent import nodes
+from agent.graph import build_graph
+from agent.state import GuideSettings, initial_state
+from city_guide.types import StoryResponse, Theme, Verbosity, VerifyReport
 
 
 def test_intake_normalizes_lng_alias_and_strings() -> None:

@@ -14,8 +14,6 @@ Wikidata, Tavily) — failed claims get regenerated, then stripped. Compare with
 
 Built for the [Nebius Serverless AI Builders Challenge](https://nebius.com/serverless-ai-builders-challenge).
 Design, grounding mechanics, audit trail: [ARCHITECTURE.md](ARCHITECTURE.md).
-There is also a conversational agent shell (LangGraph) over the same engine:
-[agent/README.md](agent/README.md).
 
 ## Quick start
 
@@ -29,6 +27,10 @@ uv run guide.py intro 52.4986 13.4194
 
 # same story without the fact-check pass (comparison demo)
 uv run guide.py intro 52.4986 13.4194 --no-verify
+
+# or just ask in free text — a small LangGraph agent (agent/) turns your words
+# into the engine settings (theme, length, language, radius, web search)
+uv run guide.py ask "what's the food story here? keep it short" 52.4986 13.4194
 
 # 1 km circular walking tour, baked via the endpoint (no job)
 uv run guide.py tour -i "street art" -L 1km --local 52.4986 13.4194
