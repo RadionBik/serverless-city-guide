@@ -1,0 +1,80 @@
+{
+  "stop": {
+    "name": "14, King Street Wc2",
+    "lat": 51.511425,
+    "lon": -0.124634,
+    "reason": "14, King Street Wc2 is a building that might contribute to the area's hidden alley character.",
+    "leg_distance_m": 91,
+    "leg_bearing_deg": 214
+  },
+  "story": "This quiet stretch is bordered by hidden gems: 30m away is [St Paul's, Covent Garden](https://www.google.com/maps/search/St+Paul%27s%2C+Covent+Garden/@51.51138888888889,-0.12416666666666668,17z/), affectionately known as 'The Actor’s Church' – London’s first purpose-built Protestant church, and a sanctuary for thespians since the 17th century.\n\n🎭 St Paul’s is more than architecture – it's a stage. Its adjacent [St Paul Covent Garden](https://www.google.com/maps/search/St+Paul+Covent+Garden/@51.51166666666666,-0.12361111111111112,17z/) gardens transform into an open-air theatre in summer, proving theatrics thrive even in flower-stalls. Beneath the grandeur? Forgotten corners of King Street still hum with the ghosts of actors, hipsters, and Inigo Jones’ original design. \n\n🤫 Skip the tourist trail – here, the real drama is in the quiet. [Peek inside the church](https://en.wikipedia.org/wiki/St_Paul%27s,_Covent+Garden) or let the alleyways whisper their tales. You might even imagine a secret passageway between the Lamb and St Paul – a hidden link for late-night soliloquies.",
+  "verify": {
+    "claims": [
+      {
+        "claim": "A short 91m walk from Middle Earth (club) brings you to 14, King Street WC2",
+        "status": "unsupported",
+        "evidence": "No information about Middle Earth (club) or 14, King Street WC2 is provided in the evidence. [removed from story]"
+      },
+      {
+        "claim": "30m away is St Paul's, Covent Garden, affectionately known as 'The Actor’s Church'",
+        "status": "supported",
+        "evidence": "The evidence confirms the existence of St Paul's, Covent Garden and its nickname 'The Actor’s Church'."
+      },
+      {
+        "claim": "St Paul's, Covent Garden is London’s first purpose-built Protestant church",
+        "status": "supported",
+        "evidence": "The evidence states that St Paul's Church is 'the first purpose-built protestant church in England'."
+      },
+      {
+        "claim": "St Paul's, Covent Garden has been a sanctuary for thespians since the 17th century",
+        "status": "supported",
+        "evidence": "The evidence mentions that St Paul’s Church is known as 'The Actor’s Church' and has a connection with the theatre industry dating back as far as the 17th century."
+      },
+      {
+        "claim": "70m away is the Lamb and Flag tavern",
+        "status": "supported",
+        "evidence": "The evidence confirms the existence of the Lamb and Flag, Covent Garden and its distance of 70m."
+      },
+      {
+        "claim": "The Lamb and Flag tavern has hosted a cast of playwrights and performers",
+        "status": "unsupported",
+        "evidence": "The evidence does not provide specific information about the Lamb and Flag tavern hosting playwrights and performers. [removed from story]"
+      },
+      {
+        "claim": "The Lamb and Flag tavern has a 17th-century skull-and-crossbones ceiling",
+        "status": "unsupported",
+        "evidence": "The evidence does not mention the ceiling of the Lamb and Flag tavern or its design."
+      },
+      {
+        "claim": "St Paul’s is more than architecture – it's a stage",
+        "status": "uncertain",
+        "evidence": "This is a subjective statement and not a specific factual claim that can be verified from the evidence."
+      },
+      {
+        "claim": "St Paul Covent Garden gardens transform into an open-air theatre in summer",
+        "status": "supported",
+        "evidence": "The evidence states that 'St Paul's Church Gardens' are 'transformed into an open air theatre' in summer."
+      },
+      {
+        "claim": "Theatrics thrive even in flower-stalls",
+        "status": "uncertain",
+        "evidence": "This is a subjective statement and not a specific factual claim that can be verified from the evidence."
+      },
+      {
+        "claim": "Forgotten corners of King Street still hum with the ghosts of actors, hipsters, and Inigo Jones’ original design",
+        "status": "uncertain",
+        "evidence": "This is a subjective statement and not a specific factual claim that can be verified from the evidence."
+      },
+      {
+        "claim": "Skip the tourist trail – here, the real drama is in the quiet",
+        "status": "uncertain",
+        "evidence": "This is a subjective statement and not a specific factual claim that can be verified from the evidence."
+      },
+      {
+        "claim": "You might even imagine a secret passageway between the Lamb and St Paul – a hidden link for late-night soliloquies",
+        "status": "uncertain",
+        "evidence": "This is a subjective statement and not a specific factual claim that can be verified from the evidence."
+      }
+    ]
+  }
+}

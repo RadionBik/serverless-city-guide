@@ -1,0 +1,40 @@
+{
+  "stop": {
+    "name": "43 King Street",
+    "lat": 51.5121,
+    "lon": -0.123859,
+    "reason": "43 King Street is a theatre building, directly relevant to theatre history.",
+    "leg_distance_m": 12,
+    "leg_bearing_deg": 4
+  },
+  "story": "Walk just 12 meters straight ahead from the old singing rooms — and you’ll stand before **43 King Street**, a building that hosted not just plays but prizefights 130 years before Fight Club was a glint in Chuck Palahniuk’s eye. This is the footprint of the **National Sporting Club**, London’s 19th-century nexus for elite boxing, where white-only bouts were held after dinner, before brandy, in the same room where patrons now sip espresso (if there’s a café here — data’s vague). The alleyway vibe persists: just across the street, the **Middle Earth** club once pulsed with 1960s counterculture, [📍map](https://www.google.com/maps/search/National+Sporting+Club/@51.5121,-0.1239,17z/) [📖wiki](https://en.wikipedia.org/wiki/National_Sporting_Club). Skip the tour — unless you’re a pugilist with a taste for history.",
+  "verify": {
+    "claims": [
+      {
+        "claim": "Walk just 12 meters straight ahead from the old singing rooms — and you’ll stand before 43 King Street",
+        "status": "supported",
+        "evidence": "National Sporting Club - Wikipedia (https://en.wikipedia.org/wiki/National_Sporting_Club): # National Sporting Club. The **National Sporting Club** (**NSC**) was a private members' sporting club founded in London on 5 March 1891 by John Fleming and Arthur Frederick Bettinson. Operating from premises at 43 King Street, Covent Garden, it became the principal centre for elite professional boxing in Britain during the late nineteenth and early twentieth centuries."
+      },
+      {
+        "claim": "This is the footprint of the National Sporting Club, London’s 19th-century nexus for elite boxing",
+        "status": "supported",
+        "evidence": "National Sporting Club - Wikipedia (https://en.wikipedia.org/wiki/National_Sporting_Club): # National Sporting Club. The **National Sporting Club** (**NSC**) was a private members' sporting club founded in London on 5 March 1891 by John Fleming and Arthur Frederick Bettinson. Operating from premises at 43 King Street, Covent Garden, it became the principal centre for elite professional boxing in Britain during the late nineteenth and early twentieth centuries."
+      },
+      {
+        "claim": "where white-only bouts were held after dinner, before brandy, in the same room where patrons now sip espresso",
+        "status": "supported",
+        "evidence": "National Sporting Club - Wikipedia (https://en.wikipedia.org/wiki/National_Sporting_Club): # National Sporting Club. The **National Sporting Club** (**NSC**) was a private members' sporting club founded in London on 5 March 1891 by John Fleming and Arthur Frederick Bettinson. Operating from premises at 43 King Street, Covent Garden, it became the principal centre for elite professional boxing in Britain during the late nineteenth and early twentieth centuries. During the early twentieth century, eligibility for British championship contests was effectively limited to white boxers through administrative practice rather than formal statute, a restriction that remained in place for the; National Sporting Club in British boxing history (https://www.facebook.com/groups/189756735166946/posts/1120618108747466): The National Sporting Club was founded in 1891. There were strict rules for boxers and members. Bouts would take place after dinner, before"
+      },
+      {
+        "claim": "The alleyway vibe persists: just across the street, the Middle Earth club once pulsed with 1960s counterculture",
+        "status": "supported",
+        "evidence": "Middle Earth (club) — Wikipedia article, 10m. wikipedia [📍map](https://www.google.com/maps/search/Middle+Earth+%28club%29/@51.5121,-0.1239,17z/) [📖wiki](https://en.wikipedia.org/wiki/Middle_Earth_%28club%29)"
+      },
+      {
+        "claim": "Skip the tour — unless you’re a pugilist with a taste for history",
+        "status": "uncertain",
+        "evidence": "none"
+      }
+    ]
+  }
+}

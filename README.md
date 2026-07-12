@@ -14,6 +14,7 @@ Wikidata, Tavily) — failed claims get regenerated, then stripped. Compare with
 
 Built for the [Nebius Serverless AI Builders Challenge](https://nebius.com/serverless-ai-builders-challenge).
 Design, grounding mechanics, audit trail: [ARCHITECTURE.md](ARCHITECTURE.md).
+The story: [docs/blog-post.md](docs/blog-post.md). Execution proofs: [proofs/](proofs/).
 
 ## Quick start
 

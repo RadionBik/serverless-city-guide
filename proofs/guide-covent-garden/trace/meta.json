@@ -1,0 +1,7 @@
+{
+  "model": "Qwen/Qwen3-32B",
+  "story_temperature": 0.8,
+  "judge_temperature": 0.1,
+  "started": "2026-07-12T21:35:42.315814+00:00",
+  "finished": "2026-07-12T21:37:33.792845+00:00"
+}
