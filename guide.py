@@ -216,10 +216,10 @@ examples:
   # plan a walking tour (writes tour.json + trace/curation.json)
   guide.py tour -i "street art" -L 1km 51.5245 -0.0786
   guide.py tour -L 2km --open 51.5117 -0.1240      # one-way instead of circular
-  guide.py tour -L 1km --local 54.4556 -2.1603     # plan + bake in one go
+  guide.py tour -L 1km --local 51.5245 -0.0786     # plan + bake in one go
 
   # free-text question — the agent picks theme/length/language for you
-  guide.py ask "what's the food story here? keep it short" 51.5117 -0.1240
+  guide.py ask "what's the food story here? keep it short" 51.5055 -0.0910   # Borough Market
 
   # read a baked guide
   guide.py status <guide_id>
