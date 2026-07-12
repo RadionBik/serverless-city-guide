@@ -24,6 +24,8 @@ dev = [
 [project.optional-dependencies]
 # vLLM comes from the job base image; install locally only if you run prebake outside Docker
 job = ["vllm>=0.25.0"]
+# conversational agent shell (agent/) — LangGraph orchestration on top of city_guide
+agent = ["langgraph>=1.0.0", "langchain-core>=1.0.0", "openai>=2.0.0", "pydantic-settings>=2.10.0", "geopy>=2.4.0"]
 
 [build-system]
 requires = ["hatchling"]
