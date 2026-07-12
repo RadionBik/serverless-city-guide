@@ -15,7 +15,8 @@ Design: [ARCHITECTURE.md](ARCHITECTURE.md).
 
 ```bash
 uv sync
-cp .env.example .env      # set LLM_BASE_URL (+ optional TAVILY_API_KEY)
+cp .env.example .env      # set LLM_BASE_URL, or just NEBIUS_API_KEY to use
+                          # Nebius Token Factory as the dev fallback
 
 # live story about what's around a pin
 uv run guide.py intro 52.4986 13.4194
@@ -35,8 +36,9 @@ uv run guide.py show <guide_id>
 ## Deploy on Nebius
 
 1. **Endpoint** (storyteller): `./scripts/deploy_endpoint.sh` — stock
-   `vllm/vllm-openai` image serving `Qwen/Qwen2.5-32B-Instruct-AWQ`,
-   preset `1gpu-16vcpu-200gb` (L40S-class). Put the endpoint URL into `.env`.
+   `vllm/vllm-openai` image serving `Qwen/Qwen3-32B` (the same model as the
+   Token Factory dev fallback and the job), preset `1gpu-16vcpu-200gb`
+   (H100 80 GB). Put the endpoint URL into `.env`.
 2. **Job image**: `docker build -t <registry>/city-guide-prebake .` and push.
 3. **Bake**: `BUCKET=s3://... JOB_IMAGE=... ./scripts/submit_prebake.sh guides/<id>/tour.json`
 

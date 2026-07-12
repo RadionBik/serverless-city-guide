@@ -14,7 +14,14 @@ from typing import Any, Protocol, TypeVar
 
 from pydantic import BaseModel, ValidationError
 
-from city_guide.config import HttpConfig, LlmConfig, get_llm_api_key, get_llm_base_url, get_llm_model
+from city_guide.config import (
+    TOKEN_FACTORY_URL,
+    HttpConfig,
+    LlmConfig,
+    get_llm_api_key,
+    get_llm_base_url,
+    get_llm_model,
+)
 from city_guide.http_client import get_client
 from city_guide.prompts import Message
 
@@ -104,6 +111,8 @@ class EndpointBackend:
         self.base_url = (base_url or get_llm_base_url()).rstrip("/")
         self.api_key = api_key if api_key is not None else get_llm_api_key()
         self.model = model or get_llm_model()
+        if self.base_url == TOKEN_FACTORY_URL:
+            logger.info("No endpoint configured — using Nebius Token Factory (dev fallback), model=%s", self.model)
 
     async def generate(self, messages: list[Message], schema: type[T], *, temperature: float) -> T:
         body = {

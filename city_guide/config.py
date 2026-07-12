@@ -290,19 +290,31 @@ def get_log_file() -> str | None:
     return os.environ.get("LOG_FILE", LogConfig.file)
 
 
+# Dev fallback: Nebius Token Factory (hosted, per-token) when no endpoint is deployed.
+TOKEN_FACTORY_URL = "https://api.tokenfactory.nebius.com/v1"
+# ONE model everywhere — Token Factory, endpoint, and job must tell the same story.
+# Qwen3-32B: hosted on Token Factory AND fits one H100 80 GB (bf16 ~65 GB + KV cache) for vLLM.
+DEFAULT_MODEL = "Qwen/Qwen3-32B"
+
+
+def using_token_factory() -> bool:
+    """True when no LLM_BASE_URL is set — requests go to Token Factory."""
+    return not os.environ.get("LLM_BASE_URL")
+
+
 def get_llm_base_url() -> str:
-    """OpenAI-compatible base URL of the storyteller endpoint (vLLM serve)."""
-    return os.environ.get("LLM_BASE_URL", "http://localhost:8000/v1").rstrip("/")
+    """OpenAI-compatible base URL — the deployed endpoint, or Token Factory as dev fallback."""
+    return (os.environ.get("LLM_BASE_URL") or TOKEN_FACTORY_URL).rstrip("/")
 
 
 def get_llm_api_key() -> str:
-    """Bearer token for the endpoint; empty string = no auth header."""
-    return os.environ.get("LLM_API_KEY", "")
+    """Bearer token — LLM_API_KEY, or NEBIUS_API_KEY (Token Factory); empty = no auth header."""
+    return os.environ.get("LLM_API_KEY") or os.environ.get("NEBIUS_API_KEY", "")
 
 
 def get_llm_model() -> str:
-    """Model id — must match what the endpoint serves / the job loads."""
-    return os.environ.get("LLM_MODEL", "Qwen/Qwen2.5-32B-Instruct-AWQ")
+    """Model id — the same model on every surface."""
+    return os.environ.get("LLM_MODEL", DEFAULT_MODEL)
 
 
 def get_tavily_api_key() -> str | None:

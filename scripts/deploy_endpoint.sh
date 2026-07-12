@@ -3,7 +3,7 @@
 # Check flag names against `nebius ai endpoint create --help` before first run.
 set -euo pipefail
 
-MODEL="${LLM_MODEL:-Qwen/Qwen2.5-32B-Instruct-AWQ}"
+MODEL="${LLM_MODEL:-Qwen/Qwen3-32B}"
 NAME="${ENDPOINT_NAME:-city-guide-storyteller}"
 PRESET="${ENDPOINT_PRESET:-1gpu-16vcpu-200gb}"
 

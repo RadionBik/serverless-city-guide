@@ -130,11 +130,14 @@ Same model, same prompts, same schemas — the only difference is how tokens get
 
 | Surface | Runs | Image | GPU |
 |---|---|---|---|
-| **Endpoint** | vLLM serving the storyteller | stock vLLM image, model as arg | 1× L40S-class |
+| **Endpoint** | vLLM serving the storyteller | stock vLLM image, model as arg | 1× H100 80 GB |
 | **Job** | `prebake.py` (offline batch) | this repo's Dockerfile (vLLM base + package) | 1× GPU, exists only during the run |
 
-Model: one mid-size instruct model (14–32B, AWQ) that fits a 48 GB GPU.
-Exact model id is config, not architecture.
+Model: ONE mid-size instruct model on every surface (default: Qwen3-32B —
+hosted on Token Factory for dev, fits one H100 80 GB for serving and batch).
+Exact model id is config, not architecture. For development without any
+deployed endpoint, the CLI falls back to Nebius Token Factory (hosted
+inference, same model, same OpenAI-compatible protocol).
 
 ## Repo layout
 

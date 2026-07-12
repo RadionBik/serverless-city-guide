@@ -21,7 +21,7 @@ nebius ai job create \
   --mount "bucket=$BUCKET,path=/store" \
   --env "GUIDE_STORE_DIR=/store" \
   --env "TOUR_JSON=/store/$GUIDE_ID/tour.json" \
-  --env "LLM_MODEL=${LLM_MODEL:-Qwen/Qwen2.5-32B-Instruct-AWQ}" \
+  --env "LLM_MODEL=${LLM_MODEL:-Qwen/Qwen3-32B}" \
   "$@"
 
 echo "When done: aws s3 sync $BUCKET/$GUIDE_ID guides/$GUIDE_ID && ./guide.py show $GUIDE_ID"
