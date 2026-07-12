@@ -57,7 +57,9 @@ class _OverpassConfig:
         "https://overpass.kumi.systems/api/interpreter",
         "https://overpass-api.de/api/interpreter",
     )
-    query_timeout: int = 5
+    # Server-side QL timeout; the HTTP read timeout is derived from it (+5 s)
+    # because public mirrors regularly need more than the global 5 s budget.
+    query_timeout: int = 10
 
 
 OverpassConfig = _OverpassConfig()

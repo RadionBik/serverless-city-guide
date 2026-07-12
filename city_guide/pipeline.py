@@ -60,7 +60,13 @@ async def gather(
         queries = _tavily_queries(data, interest)
         if queries:
             web = await collect(
-                lat, lon, radius_override=fetch_radius, theme=theme, tavily_queries=queries, with_wikidata=False
+                lat,
+                lon,
+                radius_override=fetch_radius,
+                theme=theme,
+                tavily_queries=queries,
+                with_wikidata=False,
+                with_geo=False,
             )
             data = data.model_copy(update={"tavily_snippets": web.tavily_snippets})
 

@@ -82,13 +82,13 @@ async def fetch_raw_elements(
     last_exc: Exception | None = None
     for base_url in OverpassConfig.urls:
         try:
-            resp = await client.get(f"{base_url}?data={encoded}")
+            resp = await client.get(f"{base_url}?data={encoded}", timeout=OverpassConfig.query_timeout + 5)
             resp.raise_for_status()
             data = resp.json()
             elements: list[dict[str, Any]] = data.get("elements", [])
             return elements
         except (httpx.HTTPStatusError, httpx.TransportError) as exc:
-            log.warning("Overpass mirror %s failed: %s", base_url, exc)
+            log.warning("Overpass mirror %s failed: %r", base_url, exc)
             last_exc = exc
 
     if last_exc is not None:
