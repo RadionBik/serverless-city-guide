@@ -20,7 +20,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 
 from city_guide.backends import EndpointBackend, LLMBackend, OfflineBackend
-from city_guide.config import LlmConfig, TourConfig
+from city_guide.config import LlmConfig, TourConfig, get_llm_model
 from city_guide.logging_config import setup_logging
 from city_guide.narrator import build_evidence
 from city_guide.pipeline import gather
@@ -72,6 +72,9 @@ async def bake(plan: TourPlan, backend: LLMBackend, store: GuideStore) -> GuideM
     reports: list[VerifyReport] = await backend.generate_batch(
         judge_batches, VerifyReport, temperature=LlmConfig.judge_temperature
     )
+    rounds: list[list[dict[str, object]]] = [
+        [{"story": chapters[i], "verify": reports[i].model_dump()}] for i in range(len(chapters))
+    ]
 
     # 4. Regenerate failures — batch retry rounds, then strip what still fails
     for _ in range(LlmConfig.regen_attempts):
@@ -92,16 +95,32 @@ async def bake(plan: TourPlan, backend: LLMBackend, store: GuideStore) -> GuideM
         for k, i in enumerate(failed):
             chapters[i] = retried[k].text
             reports[i] = recheck[k]
+            rounds[i].append({"story": chapters[i], "verify": reports[i].model_dump()})
 
+    stripped = [0] * len(chapters)
     for i, report in enumerate(reports):
         if report.unsupported:
-            chapters[i], removed = strip_unsupported(chapters[i], report)
-            if removed:
-                logger.info("Stop %d: removed %d ungrounded sentences", i, removed)
+            chapters[i], stripped[i] = strip_unsupported(chapters[i], report)
+            if stripped[i]:
+                logger.info("Stop %d: removed %d ungrounded sentences", i, stripped[i])
 
-    # 5. Package
+    # 5. Package + trace (audit layer: evidence, every verify round, strip count)
     for i, stop in enumerate(plan.stops):
         store.save_stop(plan.guide_id, i, StopStory(stop=stop, story=chapters[i], verify=reports[i]))
+        store.save_trace(
+            plan.guide_id, f"stop-{i}", {"evidence": evidences[i], "rounds": rounds[i], "stripped": stripped[i]}
+        )
+    store.save_trace(
+        plan.guide_id,
+        "meta",
+        {
+            "model": get_llm_model(),
+            "story_temperature": LlmConfig.story_temperature,
+            "judge_temperature": LlmConfig.judge_temperature,
+            "started": manifest.created_at,
+            "finished": datetime.now(UTC).isoformat(),
+        },
+    )
     manifest.intro = intro
     manifest.outro = outro
     manifest.status = "ready"

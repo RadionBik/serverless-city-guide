@@ -38,6 +38,11 @@ def setup_logging(*, log_file: str | None = None) -> None:
     stream_handler.setFormatter(formatter)
     root.addHandler(stream_handler)
 
+    # Third-party request noise off unless debugging; city_guide.* INFO is the status signal.
+    if level > logging.DEBUG:
+        logging.getLogger("httpx").setLevel(logging.WARNING)
+        logging.getLogger("httpcore").setLevel(logging.WARNING)
+
     # --- optional rotating file handler ---
     # Empty string (e.g. LOG_FILE="") is treated as no file.
     resolved_file = log_file if log_file is not None else get_log_file()

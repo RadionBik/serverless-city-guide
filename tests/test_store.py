@@ -1,5 +1,6 @@
 """Guide store — JSON round-trips and haversine retrieval."""
 
+import json
 from pathlib import Path
 
 from city_guide.store import GuideStore, read_tour_plan
@@ -71,3 +72,11 @@ def test_read_tour_plan(tmp_path: Path) -> None:
     plan = read_tour_plan(path)
     assert plan.guide_id == "tour-test"
     assert len(plan.stops) == 2
+
+
+def test_save_trace_writes_json(tmp_path: Path) -> None:
+    store = GuideStore(tmp_path)
+    store.save_trace("g1", "stop-0", {"evidence": "e", "rounds": [{"story": "s"}], "stripped": 0})
+    payload = json.loads((tmp_path / "g1" / "trace" / "stop-0.json").read_text(encoding="utf-8"))
+    assert payload["evidence"] == "e"
+    assert payload["rounds"][0]["story"] == "s"

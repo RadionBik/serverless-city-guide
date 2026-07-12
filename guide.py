@@ -47,13 +47,23 @@ def _print_report(report: VerifyReport, regenerated: bool) -> None:
         print(line)
 
 
+def _status(msg: str) -> None:
+    """Progress line on stderr — stdout stays clean for the story."""
+    print(msg, file=sys.stderr)
+
+
 async def cmd_intro(args: argparse.Namespace) -> None:
     backend = EndpointBackend()
     store = GuideStore()
+    _status(f"Gathering data around ({args.lat}, {args.lon})...")
     display, analysis, data = await gather(
         args.lat, args.lon, radius=args.radius, theme=args.focus, with_web=not args.no_web
     )
     baked = warm_context(store, args.lat, args.lon, args.radius or SearchConfig.default_display_radius)
+    _status(
+        f"Found: {len(data.wikipedia_articles)} wiki articles, {len(data.overpass_pois)} POIs, "
+        f"{len(data.tavily_snippets or [])} web snippets, {len(baked)} baked stories"
+    )
     evidence = build_evidence(display, analysis, data.tavily_snippets, baked)
 
     if args.output == OutputMode.RAW:
@@ -69,10 +79,12 @@ async def cmd_intro(args: argparse.Namespace) -> None:
         print(f"Nothing notable within {radius} m of ({args.lat}, {args.lon}) — try a larger --radius or another pin.")
         return
 
+    _status("Writing story...")
     story, messages = await narrate(evidence, backend, language=args.lang, theme=args.focus, verbosity=args.detail)
     if args.no_verify:
         print(story)
     else:
+        _status("Verifying...")
         story, report, regenerated = await verify_and_repair(story, messages, evidence, backend)
         print(story)
         _print_report(report, regenerated)
@@ -98,7 +110,7 @@ async def cmd_tour(args: argparse.Namespace) -> None:
 
     print(f"Curating a tour near ({args.lat}, {args.lon}) — interest: {interest}")
     plan = await plan_tour(
-        args.lat, args.lon, interest, backend, language=args.lang, length_m=length_m, circular=circular
+        args.lat, args.lon, interest, backend, language=args.lang, length_m=length_m, circular=circular, store=store
     )
 
     if plan.note:

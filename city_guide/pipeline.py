@@ -100,6 +100,7 @@ async def plan_tour(
     language: Language = Language.EN,
     length_m: int | None = None,
     circular: bool = True,
+    store: GuideStore | None = None,
 ) -> TourPlan:
     """Submit-time tour planning: gather wide → curate (LLM, by ID) → route (code).
 
@@ -127,8 +128,20 @@ async def plan_tour(
 
     curated = await curate(candidates, interest, backend, min_stops=TourConfig.min_stops, max_stops=max_stops)
     stops, total = compose_route(lat, lon, candidates, curated.stops, max_length=target, circular=circular)
+    guide_id = _guide_id(lat, lon)
+    if store is not None:
+        store.save_trace(
+            guide_id,
+            "curation",
+            {
+                "interest": interest,
+                "candidates": [c.model_dump() for c in candidates],
+                "picks": [p.model_dump() for p in curated.stops],
+                "note": curated.note,
+            },
+        )
     return TourPlan(
-        guide_id=_guide_id(lat, lon),
+        guide_id=guide_id,
         origin_lat=lat,
         origin_lon=lon,
         interest=interest,

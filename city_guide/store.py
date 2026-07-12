@@ -12,6 +12,7 @@ from __future__ import annotations
 import json
 import logging
 from pathlib import Path
+from typing import Any
 
 from city_guide.bearing import haversine
 from city_guide.config import get_store_dir
@@ -38,6 +39,14 @@ class GuideStore:
         stops_dir = self._guide_dir(guide_id) / "stops"
         stops_dir.mkdir(parents=True, exist_ok=True)
         (stops_dir / f"{index}.json").write_text(story.model_dump_json(indent=2), encoding="utf-8")
+
+    def save_trace(self, guide_id: str, name: str, payload: dict[str, Any]) -> None:
+        """Audit layer — write-only debug/proof artifacts, never read by the app."""
+        trace_dir = self._guide_dir(guide_id) / "trace"
+        trace_dir.mkdir(parents=True, exist_ok=True)
+        (trace_dir / f"{name}.json").write_text(
+            json.dumps(payload, ensure_ascii=False, indent=2, default=str), encoding="utf-8"
+        )
 
     # --- read (CLI / live path) ---
 
