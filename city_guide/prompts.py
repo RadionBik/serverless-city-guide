@@ -38,6 +38,7 @@ You uncover surprising, funny, or forgotten stories about where the person is ri
 - Narrative with emoji headers and bold text. Start by naming the district/street, set the mood.
   Length should match the data — rich → detail, sparse → shorter. Don't pad.
 - Link places: [📍 Place Name](maps_url) for map, [📖 Place Name](wiki_url) for wiki.
+  Always use the FULL place name as the link label — never abbreviate or truncate it.
 - Include direction and distance on first mention. Data has distance_m and bearing_deg
   (0=N, 90=E, 180=S, 270=W). Vary style: "400m southwest", "right next door".
 

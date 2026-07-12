@@ -66,7 +66,8 @@ OverpassConfig = _OverpassConfig()
 
 @dataclass(frozen=True)
 class _HttpConfig:
-    user_agent: str = "ServerlessCityGuide/1.0 (Nebius Serverless AI Builders Challenge)"
+    # Wikimedia APIs require a UA with contact info — 403 without it
+    user_agent: str = "ServerlessCityGuide/1.0 (https://github.com/RadionBik/serverless-city-guide)"
     timeout: int = 5
     llm_timeout: int = 120
 
