@@ -143,6 +143,18 @@ async def cmd_tour(args: argparse.Namespace) -> None:
         print(f"Then: guide.py status {plan.guide_id}")
 
 
+async def cmd_ask(args: argparse.Namespace) -> None:
+    try:
+        from agent.graph import build_graph
+        from agent.state import initial_state
+    except ImportError:
+        sys.exit("The agent extra is not installed. Run: uv sync --extra agent")
+
+    _status("Thinking about your question...")
+    result = await build_graph().ainvoke(initial_state(raw_text=args.text, coords={"lat": args.lat, "lon": args.lon}))
+    print(result["reply"])
+
+
 def cmd_status(args: argparse.Namespace) -> None:
     manifest = GuideStore().load_manifest(args.guide_id)
     if manifest is None:
@@ -202,6 +214,9 @@ examples:
   guide.py tour -L 2km --open 51.5117 -0.1240      # one-way instead of circular
   guide.py tour -L 1km --local 54.4556 -2.1603     # plan + bake in one go
 
+  # free-text question — the agent picks theme/length/language (uv sync --extra agent)
+  guide.py ask "what's the food story here? keep it short" 51.5117 -0.1240
+
   # read a baked guide
   guide.py status <guide_id>
   guide.py show <guide_id>
@@ -238,6 +253,11 @@ debug:   LOG_LEVEL=DEBUG for full request logs; bake audit trail in guides/<id>/
     p_tour.add_argument("--open", action="store_true", help="one-way route instead of circular (back to start)")
     p_tour.add_argument("--local", action="store_true", help="bake in-process via the endpoint (no job)")
 
+    p_ask = sub.add_parser("ask", help="free-text question about a spot — the agent picks the settings")
+    p_ask.add_argument("text", help='e.g. "what\'s the food story here? keep it short"')
+    p_ask.add_argument("lat", type=_coord)
+    p_ask.add_argument("lon", type=_coord)
+
     p_status = sub.add_parser("status", help="guide status")
     p_status.add_argument("guide_id")
 
@@ -250,6 +270,8 @@ debug:   LOG_LEVEL=DEBUG for full request logs; bake audit trail in guides/<id>/
             asyncio.run(_with_cleanup(cmd_intro(args)))
         elif args.command == "tour":
             asyncio.run(_with_cleanup(cmd_tour(args)))
+        elif args.command == "ask":
+            asyncio.run(_with_cleanup(cmd_ask(args)))
         elif args.command == "status":
             cmd_status(args)
         elif args.command == "show":
