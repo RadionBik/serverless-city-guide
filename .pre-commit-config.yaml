@@ -1,13 +1,20 @@
+# Tools run from the dev env (uv) — versions come from pyproject.toml, not pinned revs.
 repos:
-  - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.15.17
+  - repo: local
     hooks:
-      - id: ruff
-        args: [--fix]
+      - id: ruff-check
+        name: ruff check
+        entry: uv run ruff check --fix
+        language: system
+        types: [python]
       - id: ruff-format
-
-  - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v2.1.0
-    hooks:
+        name: ruff format
+        entry: uv run ruff format
+        language: system
+        types: [python]
       - id: mypy
-        additional_dependencies: [pydantic>=2.0]
+        name: mypy
+        entry: uv run mypy city_guide tests guide.py
+        language: system
+        types: [python]
+        pass_filenames: false
