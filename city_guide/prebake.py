@@ -45,14 +45,9 @@ async def bake(plan: TourPlan, backend: LLMBackend, store: GuideStore) -> GuideM
     # 1. Deep gather per stop — parallel, network-bound
     logger.info("Gathering evidence for %d stops", len(plan.stops))
     gathered = await asyncio.gather(
-        *(
-            gather(stop.lat, stop.lon, radius=TourConfig.stop_radius, interest=plan.interest)
-            for stop in plan.stops
-        )
+        *(gather(stop.lat, stop.lon, radius=TourConfig.stop_radius, interest=plan.interest) for stop in plan.stops)
     )
-    evidences = [
-        build_evidence(display, analysis, data.tavily_snippets) for display, analysis, data in gathered
-    ]
+    evidences = [build_evidence(display, analysis, data.tavily_snippets) for display, analysis, data in gathered]
 
     # 2. Batch narrate — all chapters + intro + outro in ONE offline pass
     system = build_storyteller_system(plan.language)

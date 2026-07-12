@@ -100,9 +100,7 @@ async def plan_tour(
     language: Language = Language.EN,
 ) -> TourPlan:
     """Submit-time tour planning: gather wide → curate (LLM, by ID) → route (code)."""
-    display, _, _ = await gather(
-        lat, lon, radius=TourConfig.candidate_radius, interest=interest, with_web=False
-    )
+    display, _, _ = await gather(lat, lon, radius=TourConfig.candidate_radius, interest=interest, with_web=False)
     candidates = build_candidates(display)
     if not candidates:
         return TourPlan(

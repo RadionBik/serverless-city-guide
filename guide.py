@@ -12,6 +12,8 @@ import argparse
 import asyncio
 import json
 import sys
+from collections.abc import Coroutine
+from typing import Any
 
 from city_guide.backends import EndpointBackend
 from city_guide.config import SearchConfig
@@ -29,11 +31,12 @@ from city_guide.types import (
     OutputMode,
     Theme,
     Verbosity,
+    VerifyReport,
 )
 from city_guide.verifier import verify_and_repair
 
 
-def _print_report(report, regenerated: bool) -> None:
+def _print_report(report: VerifyReport, regenerated: bool) -> None:
     print(f"\n--- verification: {report.summary()}" + (" (regenerated once)" if regenerated else " ---"))
     for claim in report.claims:
         mark = {"supported": "✓", "unsupported": "✗", "uncertain": "?"}[claim.status]
@@ -59,9 +62,7 @@ async def cmd_intro(args: argparse.Namespace) -> None:
         print(evidence)
         return
 
-    story, messages = await narrate(
-        evidence, backend, language=args.lang, theme=args.focus, verbosity=args.detail
-    )
+    story, messages = await narrate(evidence, backend, language=args.lang, theme=args.focus, verbosity=args.detail)
     if args.no_verify:
         print(story)
     else:
@@ -154,7 +155,11 @@ def main() -> None:
     p_intro.add_argument("-f", "--focus", type=Theme, choices=list(Theme), default=DEFAULT_THEME)
     p_intro.add_argument("-d", "--detail", type=Verbosity, choices=list(Verbosity), default=DEFAULT_VERBOSITY)
     p_intro.add_argument(
-        "-o", "--output", type=OutputMode, choices=list(OutputMode), default=OutputMode.STORY,
+        "-o",
+        "--output",
+        type=OutputMode,
+        choices=list(OutputMode),
+        default=OutputMode.STORY,
         help="raw (JSON) | prompt (evidence dump) | story",
     )
     p_intro.add_argument("--no-verify", action="store_true", help="skip the judge pass (comparison switch)")
@@ -185,7 +190,7 @@ def main() -> None:
         sys.exit(130)
 
 
-async def _with_cleanup(coro) -> None:
+async def _with_cleanup(coro: Coroutine[Any, Any, None]) -> None:
     try:
         await coro
     finally:

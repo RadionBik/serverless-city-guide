@@ -33,9 +33,7 @@ T = TypeVar("T", bound=BaseModel)
 class LLMBackend(Protocol):
     async def generate(self, messages: list[Message], schema: type[T], *, temperature: float) -> T: ...
 
-    async def generate_batch(
-        self, batches: list[list[Message]], schema: type[T], *, temperature: float
-    ) -> list[T]: ...
+    async def generate_batch(self, batches: list[list[Message]], schema: type[T], *, temperature: float) -> list[T]: ...
 
 
 def _openai_strict_schema(schema: dict[str, Any]) -> dict[str, Any]:

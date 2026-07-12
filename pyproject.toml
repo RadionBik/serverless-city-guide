@@ -6,22 +6,24 @@ readme = "README.md"
 requires-python = ">=3.12"
 license = { text = "MIT" }
 dependencies = [
-    "httpx>=0.27",
-    "pydantic>=2.7",
-    "python-dotenv>=1.0",
+    "httpx>=0.28.1",
+    "pydantic>=2.13.4",
+    "python-dotenv>=1.2.2",
 ]
 
 [dependency-groups]
 dev = [
-    "pytest>=8.0",
-    "pytest-asyncio>=0.23",
-    "respx>=0.21",
-    "ruff>=0.4",
+    "pytest>=9.1.1",
+    "pytest-asyncio>=1.4.0",
+    "respx>=0.23.1",
+    "ruff>=0.15.21",
+    "mypy>=2.2.0",
+    "pre-commit>=4.6.0",
 ]
 
 [project.optional-dependencies]
 # vLLM comes from the job base image; install locally only if you run prebake outside Docker
-job = ["vllm>=0.6"]
+job = ["vllm>=0.25.0"]
 
 [build-system]
 requires = ["hatchling"]
@@ -29,6 +31,15 @@ build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
 packages = ["city_guide"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+plugins = ["pydantic.mypy"]
+
+[[tool.mypy.overrides]]
+module = "vllm.*"
+ignore_missing_imports = true
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
