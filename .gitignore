@@ -1,10 +1,26 @@
-.venv/
+# Environment
+.env
+*.env.local
+
+# Python
 __pycache__/
 *.pyc
-.env
+.venv/
+venv/
+*.egg-info/
 .pytest_cache/
 .ruff_cache/
 .mypy_cache/
-guides/
 uv.lock
+
+# Local data / stores
+guides/
 runs/
+*.sqlite3
+.cache/
+data/
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store

@@ -1,0 +1,28 @@
+# Orchestration
+langgraph
+langchain-core
+
+# Nebius LLM access (OpenAI-compatible endpoint)
+openai
+
+# Config / schemas
+pydantic
+pydantic-settings
+python-dotenv
+
+# HTTP / async
+httpx
+
+# Web search (choose provider client as needed)
+tavily-python
+
+# Geo
+geopy
+
+# Guide store / vector search (choose backend as needed)
+# qdrant-client
+# chromadb
+
+# Testing
+pytest
+pytest-asyncio
