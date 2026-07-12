@@ -174,15 +174,43 @@ def cmd_show(args: argparse.Namespace) -> None:
     print(f"\n{manifest.outro}")
 
 
+def _coord(value: str) -> float:
+    """float that tolerates a trailing comma — lets Google Maps '51.51, -0.12' paste through."""
+    return float(value.rstrip(","))
+
+
 def _add_common(parser: argparse.ArgumentParser) -> None:
-    parser.add_argument("lat", type=float)
-    parser.add_argument("lon", type=float)
+    parser.add_argument("lat", type=_coord)
+    parser.add_argument("lon", type=_coord)
     parser.add_argument("-l", "--lang", type=Language, choices=list(Language), default=DEFAULT_LANGUAGE)
 
 
 def main() -> None:
     setup_logging()
-    parser = argparse.ArgumentParser(description="Serverless city guide — every place has a story")
+    parser = argparse.ArgumentParser(
+        description="Serverless city guide — every place has a story",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog="""\
+examples:
+  # live story about what's around the pin (paste coords straight from Google Maps)
+  guide.py intro 51.5117 -0.1240
+  guide.py intro -r 500 -d short --no-verify 51.5117 -0.1240
+  guide.py intro -o prompt 51.5117 -0.1240         # see the evidence the LLM gets
+
+  # plan a walking tour (writes tour.json + trace/curation.json)
+  guide.py tour -i "street art" -L 1km 51.5245 -0.0786
+  guide.py tour -L 2km --open 51.5117 -0.1240      # one-way instead of circular
+  guide.py tour -L 1km --local 54.4556 -2.1603     # plan + bake in one go
+
+  # read a baked guide
+  guide.py status <guide_id>
+  guide.py show <guide_id>
+
+per-command flags: guide.py <command> -h
+backend: LLM_BASE_URL in .env (empty = Nebius Token Factory, needs NEBIUS_API_KEY)
+debug:   LOG_LEVEL=DEBUG for full request logs; bake audit trail in guides/<id>/trace/
+""",
+    )
     sub = parser.add_subparsers(dest="command", required=True)
 
     p_intro = sub.add_parser("intro", help="live story about what's around the pin")

@@ -8,8 +8,12 @@ One model, three roles (storyteller, judge, curator), two Nebius serverless surf
 - **Endpoint** — live stories, vLLM serving (stock image).
 - **Job** — pre-bake walking tours, offline vLLM batch (this repo's Dockerfile).
 
+Every story is fact-checked against open data (OpenStreetMap, Wikipedia,
+Wikidata, Tavily) — failed claims get regenerated, then stripped. Compare with
+`--no-verify`.
+
 Built for the [Nebius Serverless AI Builders Challenge](https://nebius.com/serverless-ai-builders-challenge).
-Design: [ARCHITECTURE.md](ARCHITECTURE.md).
+Design, grounding mechanics, audit trail: [ARCHITECTURE.md](ARCHITECTURE.md).
 
 ## Quick start
 
@@ -24,14 +28,16 @@ uv run guide.py intro 52.4986 13.4194
 # same story without the fact-check pass (comparison demo)
 uv run guide.py intro 52.4986 13.4194 --no-verify
 
-# curate + route a walking tour, bake it via the endpoint (no job)
-uv run guide.py tour 52.4986 13.4194 --interest "street art" --local
+# 1 km circular walking tour, baked via the endpoint (no job)
+uv run guide.py tour -i "street art" -L 1km --local 52.4986 13.4194
 
 # or bake it as a Nebius job
-uv run guide.py tour 52.4986 13.4194 --interest "street art"
+uv run guide.py tour -i "street art" -L 1km 52.4986 13.4194
 ./scripts/submit_prebake.sh guides/<guide_id>/tour.json
 uv run guide.py show <guide_id>
 ```
+
+Full usage guide with all flags and examples: `uv run guide.py -h`.
 
 ## Deploy on Nebius
 
@@ -44,18 +50,6 @@ uv run guide.py show <guide_id>
 
 <!-- TODO before submission: hardware notes, runtime/cost estimate, execution proofs
      (endpoint URL, job logs, baked guide JSON), demo screenshots. -->
-
-## How grounding works
-
-Every story is checked by the same model in judge mode: the story is split into
-claims, each marked supported / uncertain / unsupported against the gathered
-evidence (OpenStreetMap, Wikipedia, Wikidata, Tavily). Unsupported claims trigger
-one regenerate with explicit feedback. The verification report ships with every
-story — run with and without `--no-verify` to see the difference.
-
-Tour stops are picked by candidate **ID** from gathered data, so the curator
-cannot invent a place. Walking order is pure geometry (nearest-neighbor + 2-opt),
-not LLM guesswork.
 
 ## License
 

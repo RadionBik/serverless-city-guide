@@ -35,6 +35,8 @@ CLI sends coordinates. Pipeline:
    (templated queries), and a guide-store lookup (nearest pre-baked stops).
 2. **Analyze** — deterministic scoring and highlights (ported from city-guide).
    The output is the LLM user message: only real places, real URLs, real distances.
+   If the pin has no data at all, the CLI says so honestly and stops — no
+   evidence, no LLM call, no story (a story from nothing is pure hallucination).
 3. **Narrate** — one call to the storyteller endpoint. Strict JSON output.
 4. **Verify** — second call to the *same* endpoint with a judge prompt:
    split the story into claims, mark each `supported | unsupported | uncertain`
@@ -53,19 +55,26 @@ One model, three roles: **storyteller** (writes), **judge** (checks),
 
 ### Submit time (seconds, CLI + endpoint)
 
-1. **Gather wide** — shallow fan-out around the pin (~1.5–2 km): names, types,
-   coordinates, wiki titles. No deep extracts yet.
+Route **length is the one user knob** (`-L 1km`, default 2 km, circular by
+default): it sets the gather radius (a circular route of length L reaches ~L/2
+from the pin), the curator's stop budget (~1 stop per 250 m, clamped 3–12), and
+the route trim cap. Sparse areas undershoot the target honestly — never padded.
+
+1. **Gather wide** — shallow fan-out around the pin (radius from the length
+   target, capped at 2.5 km): names, types, coordinates, wiki titles. No deep
+   extracts yet.
 2. **Pre-rank** — deterministic analysis scores candidates, caps the list
    (~top 50), assigns each an integer ID.
 3. **Curate** — one LLM call: candidates + interest ("street art", "cool
-   buildings", default = "most surprising, story-rich mix") → pick 6–10 stops.
-   The curator answers with **IDs from the list**, so it cannot invent a place.
-   Unknown ID → reject, one retry. If the area can't serve the interest, it
-   picks fewer stops and says so in a `note` — the CLI answers honestly instead
-   of forcing a bad tour.
+   buildings", default = "most surprising, story-rich mix") → pick stops within
+   the length budget. The curator answers with **IDs from the list**, so it
+   cannot invent a place. Unknown ID → reject, one retry. If the area can't
+   serve the interest, it picks fewer stops and says so in a `note` — the CLI
+   answers honestly instead of forcing a bad tour.
 4. **Route** — pure code, no LLM: greedy nearest-neighbor from the pin, one
-   2-opt pass to untangle crossings, drop worst-detour stops beyond ~4 km
-   total. Produces per-leg distance + bearing. Deterministic, unit-tested.
+   2-opt pass to untangle crossings, worst-detour stops dropped until the tour
+   (return leg included) fits the length target. Produces per-leg distance +
+   bearing and a per-stop map pin. Deterministic, unit-tested.
 5. **Confirm + submit** — print the proposed route right away, write
    `tour.json`, submit the Job. The user sees their route in seconds and the
    stories arrive minutes later.
@@ -81,9 +90,13 @@ One model, three roles: **storyteller** (writes), **judge** (checks),
    Plus a tour intro and outro. This is what GPU batch jobs are for.
 3. **Batch verify** — second pass, judge prompt per stop story.
 4. **Regenerate** — third pass, only failed stops, violations as feedback.
+   Claims that still fail are stripped from the story deterministically
+   (see verifier) — no unsupported claim ships.
 5. **Package** — manifest + one JSON per stop + a Google Maps walking
    deep-link (all stops as waypoints — real street routing outsourced to Maps,
    no API key) → written to the bucket mounted into the job, marked ready.
+   A `trace/` folder beside them is the audit trail: candidates the curator
+   saw, evidence per stop, every verify round, strip counts, run metadata.
 
 Baked tours are richer than live answers because batch has no latency budget —
 full verify, longer stories, cross-stop coherence. Quality comes from time,
@@ -108,6 +121,10 @@ The verifier is the same storyteller model in judge mode:
 - Input: gathered evidence + the story.
 - Output (strict JSON): list of claims, each with status and an evidence pointer.
 - `unsupported` claims trigger one regenerate with explicit feedback.
+- Claims that still fail after the retry are stripped: the best-matching
+  sentence is removed deterministically (word-overlap match, never below a
+  confidence threshold) and the claim is marked `[removed from story]` in the
+  report. Regeneration is the polite fix; the strip is the guarantee.
 - The report is part of the output, not hidden — the user (and the judges) see
   exactly what was checked.
 
@@ -186,17 +203,6 @@ Places (licensing + one less key; open data only fits the challenge rules).
 | Execution proof | endpoint URL + job logs + baked guide JSONs |
 | Blog ≥600 words | verify on/off comparison + one-image-two-surfaces story |
 | Open license, no secrets | MIT, .env.example |
-
-## Cut from the first draft (and why)
-
-- **Telegram bot + async delivery** → CLI polls job status. A bot is transport,
-  not architecture; judges read repos, not chats.
-- **Two model tiers (L40S live / H100 batch)** → one model. Two deploys to debug
-  in one evening is how evenings die.
-- **Agent tool-choice loop** → fixed parallel gather. The model narrates and
-  judges; it does not route.
-- **String-match grounding** → LLM judge (see verifier).
-- **Eval harness** → the verify report itself is the demo.
 
 ## Out of scope
 
