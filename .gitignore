@@ -17,7 +17,7 @@ guides/
 runs/
 *.sqlite3
 .cache/
-data/
+/data/
 
 # Editors / OS
 .vscode/
