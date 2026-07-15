@@ -1,0 +1,60 @@
+{
+  "plan": {
+    "guide_id": "tour-51.5117_-0.1240-1783888760",
+    "origin_lat": 51.5117,
+    "origin_lon": -0.124,
+    "interest": "theatre history and hidden alleys",
+    "language": "en",
+    "note": "Covent Garden offers a mix of historical entertainment venues and potential hidden spaces, though many stops are commercial or modern.",
+    "stops": [
+      {
+        "name": "Covent Garden Piazza",
+        "lat": 51.5116247,
+        "lon": -0.1237967,
+        "reason": "Covent Garden Piazza is an artwork with historical significance and could be part of hidden alleys.",
+        "leg_distance_m": 16,
+        "leg_bearing_deg": 121
+      },
+      {
+        "name": "Evans Music-and-Supper Rooms",
+        "lat": 51.51199,
+        "lon": -0.12387,
+        "reason": "Evans Music-and-Supper Rooms was a 19th-century entertainment venue with music and singing, aligning with theatre history.",
+        "leg_distance_m": 41,
+        "leg_bearing_deg": 353
+      },
+      {
+        "name": "43 King Street",
+        "lat": 51.5121,
+        "lon": -0.123859,
+        "reason": "43 King Street is a theatre building, directly relevant to theatre history.",
+        "leg_distance_m": 12,
+        "leg_bearing_deg": 4
+      },
+      {
+        "name": "Middle Earth (club)",
+        "lat": 51.5121,
+        "lon": -0.1239,
+        "reason": "Middle Earth was a 1960s hippie club, suggesting hidden, alternative spaces in the area.",
+        "leg_distance_m": 3,
+        "leg_bearing_deg": 270
+      },
+      {
+        "name": "14, King Street Wc2",
+        "lat": 51.511425,
+        "lon": -0.124634,
+        "reason": "14, King Street Wc2 is a building that might contribute to the area's hidden alley character.",
+        "leg_distance_m": 91,
+        "leg_bearing_deg": 214
+      }
+    ],
+    "circular": true,
+    "target_length_m": 1500,
+    "total_length_m": 217,
+    "maps_url": "https://www.google.com/maps/dir/?api=1&origin=51.5117,-0.124&destination=51.5117,-0.124&travelmode=walking&waypoints=51.5116247,-0.1237967|51.51199,-0.12387|51.5121,-0.123859|51.5121,-0.1239|51.511425,-0.124634"
+  },
+  "status": "ready",
+  "intro": "🎭 Welcome to the heart of London's ever-evolving theatrical soul — a district that’s seen operas, raves, and revolutions under the same ivy-draped stones. This short walk stitches together Covent Garden’s polished piazza with its underbelly of secret stages and alternative spaces. You’ll wander past forgotten supper clubs and venues that once pulsed with the counterculture heartbeat of Swinging London — proving that this area’s drama doesn’t just happen on stage, it lives in every cobbled corner.",
+  "outro": "As you step back into the bustling heart of London, remember that every cobbled corner and ivy-clad archway here once echoed with minstrels, murmurs of revolution, and the rebellious laughter of the counterculture. Covent Garden isn’t just a stage—it’s a living, breathing play where the city itself is the lead actor.",
+  "created_at": "2026-07-12T21:35:42.315814+00:00"
+}

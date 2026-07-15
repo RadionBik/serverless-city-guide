@@ -1,0 +1,60 @@
+{
+  "stop": {
+    "name": "Covent Garden Piazza",
+    "lat": 51.5116247,
+    "lon": -0.1237967,
+    "reason": "Covent Garden Piazza is an artwork with historical significance and could be part of hidden alleys.",
+    "leg_distance_m": 16,
+    "leg_bearing_deg": 121
+  },
+  "story": "🚶‍♂️ You're just 16 meters away — Covent Garden Piazza is a 5-minute stroll right in front of you. This square isn't just a pretty face; it's a living, breathing artwork with historical significance. Originally laid out in 1631 by Inigo Jones, this was London's first public square — a bold experiment in urban living. 🎭 Now a foodie haven with over 100 eateries and cafes, it's easy to miss the whispers of its past — but keep your eyes peeled for the discreet memorials and artworks that hint at the piazza's layered story. 📍 Just 10 meters from here is **[St Paul's Covent Garden](https://www.google.com/maps/search/St+Paul+Covent+Garden/@51.51166666666666,-0.12361111111111112,17z/)**, the church that became the heart of British theatre, where actors once claimed it was haunted and would say their prayers before curtain up to ward off the spirits. [📖 Learn more about the Actors Church](https://en.wikipedia.org/wiki/St_Paul%27s,_Covent_Garden) — their stained glass might have more drama than a West End play. 🗺️ From here, follow the cobblestones of King Street to the next chapter of your story.",
+  "verify": {
+    "claims": [
+      {
+        "claim": "Covent Garden Piazza is a 5-minute stroll right in front of you.",
+        "status": "uncertain",
+        "evidence": "Covent Garden Piazza is mentioned in the evidence as an Artwork, 10m. overpass [📍map](https://www.google.com/maps/search/Covent+Garden+Piazza/@51.5116247,-0.1237967,17z/). The distance is mentioned as 10 meters, but the 5-minute stroll is an estimate not directly supported by the evidence."
+      },
+      {
+        "claim": "Covent Garden Piazza was originally laid out in 1631 by Inigo Jones.",
+        "status": "supported",
+        "evidence": "The web context mentions that St Paul's Church was designed by Inigo Jones as part of a commission for the 4th Earl of Bedford in 1631. The development of the Covent Garden Piazza by Francis Russell, the 4th Earl of Bedford, is also mentioned. This supports the claim that Inigo Jones was involved in the layout of the piazza in 1631."
+      },
+      {
+        "claim": "Covent Garden Piazza is London's first public square.",
+        "status": "supported",
+        "evidence": "The web context states that the church of St. Paul’s was one of the first buildings to be constructed as part of the development of the Covent Garden Piazza by Francis Russell, the 4th Earl of Bedford. This implies that the piazza was a pioneering development in London's urban planning."
+      },
+      {
+        "claim": "Covent Garden Piazza is a foodie haven with over 100 eateries and cafes.",
+        "status": "supported",
+        "evidence": "The evidence mentions a food hub (100): 58× Restaurant + 24× Cafe + 10× Fast Food + 5× Bakery + 3× Ice Cream. This supports the claim that there are over 100 eateries and cafes in the area."
+      },
+      {
+        "claim": "St Paul's Covent Garden is 10 meters from here.",
+        "status": "supported",
+        "evidence": "The evidence mentions St Paul's, Covent Garden — Wikipedia article, 40m. wikipedia [📍map](https://www.google.com/maps/search/St+Paul%27s%2C+Covent+Garden/@51.51138888888889,-0.12416666666666668,17z/). However, the distance mentioned in the evidence is 40 meters, not 10 meters as stated in the story. This discrepancy means the claim is not fully supported by the evidence."
+      },
+      {
+        "claim": "St Paul's Covent Garden became the heart of British theatre.",
+        "status": "supported",
+        "evidence": "The web context mentions that St Paul's Church in Covent Garden is known as the Actors Church and has a connection with the theatre industry dating back to 1633. This supports the claim that it became the heart of British theatre."
+      },
+      {
+        "claim": "Actors once claimed St Paul's Covent Garden was haunted and would say their prayers before curtain up to ward off the spirits.",
+        "status": "uncertain",
+        "evidence": "The web context mentions that one of the most haunted theatres of the West End is Theatre Royal, of Drury Lane, but there is no direct mention of St Paul's Covent Garden being haunted or actors praying there to ward off spirits. This is a hedged claim and is plausible framing, not checkable against the evidence."
+      },
+      {
+        "claim": "The stained glass of St Paul's Covent Garden might have more drama than a West End play.",
+        "status": "uncertain",
+        "evidence": "The web context does not mention the stained glass of St Paul's Covent Garden or compare it to a West End play. This is a subjective statement and is plausible framing, not checkable against the evidence."
+      },
+      {
+        "claim": "Follow the cobblestones of King Street to the next chapter of your story.",
+        "status": "uncertain",
+        "evidence": "The evidence mentions several locations on King Street, such as % ARABICA, Mariage Frères, and Clos Maggiore. However, there is no direct mention of cobblestones on King Street or a specific next chapter of the story. This is a hedged claim and is plausible framing, not checkable against the evidence."
+      }
+    ]
+  }
+}

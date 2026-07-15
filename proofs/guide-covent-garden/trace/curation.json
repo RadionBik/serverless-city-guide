@@ -1,0 +1,478 @@
+{
+  "interest": "theatre history and hidden alleys",
+  "candidates": [
+    {
+      "id": 0,
+      "name": "St Paul Covent Garden",
+      "kind": "Wikipedia article",
+      "dist_m": 30,
+      "hint": "St Paul Covent Garden  was a civil parish in the metropolitan area of London, England. The former area of the parish now corresponds to the Covent Gar",
+      "lat": 51.51166666666666,
+      "lon": -0.12361111111111112
+    },
+    {
+      "id": 1,
+      "name": "Evans Music-and-Supper Rooms",
+      "kind": "Wikipedia article",
+      "dist_m": 30,
+      "hint": "Evans Music-and-Supper Rooms  was an entertainment venue for music and singing in the early nineteenth century, located at 43 King Street, Covent Gard",
+      "lat": 51.51199,
+      "lon": -0.12387
+    },
+    {
+      "id": 2,
+      "name": "St Paul's, Covent Garden",
+      "kind": "Wikipedia article",
+      "dist_m": 40,
+      "hint": "St Paul's Church is a Church of England parish church located in Bedford Street, Covent Garden, central London. It was designed by Inigo Jones as part",
+      "lat": 51.51138888888889,
+      "lon": -0.12416666666666668
+    },
+    {
+      "id": 3,
+      "name": "National Sporting Club",
+      "kind": "Wikipedia article",
+      "dist_m": 50,
+      "hint": "The National Sporting Club (NSC) was a private members' sporting club founded in London on 5 March 1891 by John Fleming and Arthur Frederick Bettinson",
+      "lat": 51.5121,
+      "lon": -0.1239
+    },
+    {
+      "id": 4,
+      "name": "Middle Earth (club)",
+      "kind": "Wikipedia article",
+      "dist_m": 50,
+      "hint": "Middle Earth (formerly Electric Garden Club) was a hippie club in London, England, in the mid-to-late 1960s. It was a successor to the UFO Club, which",
+      "lat": 51.5121,
+      "lon": -0.1239
+    },
+    {
+      "id": 5,
+      "name": "Aesop",
+      "kind": "Cosmetics",
+      "dist_m": 10,
+      "hint": "",
+      "lat": 51.5116474,
+      "lon": -0.1241545
+    },
+    {
+      "id": 6,
+      "name": "Monica Vinader",
+      "kind": "Jewelry",
+      "dist_m": 10,
+      "hint": "",
+      "lat": 51.5116776,
+      "lon": -0.1240889
+    },
+    {
+      "id": 7,
+      "name": "% ARABICA",
+      "kind": "Cafe",
+      "dist_m": 10,
+      "hint": "",
+      "lat": 51.511704,
+      "lon": -0.1240254
+    },
+    {
+      "id": 8,
+      "name": "NARS Cosmetics",
+      "kind": "Cosmetics",
+      "dist_m": 20,
+      "hint": "",
+      "lat": 51.5116095,
+      "lon": -0.1242431
+    },
+    {
+      "id": 9,
+      "name": "Diptyque'",
+      "kind": "Perfumery",
+      "dist_m": 20,
+      "hint": "",
+      "lat": 51.5118831,
+      "lon": -0.1242072
+    },
+    {
+      "id": 10,
+      "name": "Covent Garden Piazza",
+      "kind": "Artwork",
+      "dist_m": 20,
+      "hint": "",
+      "lat": 51.5116247,
+      "lon": -0.1237967
+    },
+    {
+      "id": 11,
+      "name": "8, King Street Wc2",
+      "kind": "building",
+      "dist_m": 20,
+      "hint": "building in Westminster, London, England, UK",
+      "lat": 51.511624,
+      "lon": -0.124246
+    },
+    {
+      "id": 12,
+      "name": "Arc'teryx",
+      "kind": "Clothes",
+      "dist_m": 30,
+      "hint": "",
+      "lat": 51.5119488,
+      "lon": -0.1241136
+    },
+    {
+      "id": 13,
+      "name": "Hackett London",
+      "kind": "Clothes",
+      "dist_m": 30,
+      "hint": "",
+      "lat": 51.5117761,
+      "lon": -0.1244383
+    },
+    {
+      "id": 14,
+      "name": "Palm Court Brasserie",
+      "kind": "Restaurant",
+      "dist_m": 30,
+      "hint": "",
+      "lat": 51.5118505,
+      "lon": -0.1242823
+    },
+    {
+      "id": 15,
+      "name": "Jo Malone",
+      "kind": "Perfumery",
+      "dist_m": 30,
+      "hint": "",
+      "lat": 51.5115537,
+      "lon": -0.1243528
+    },
+    {
+      "id": 16,
+      "name": "Mariage Frères",
+      "kind": "Cafe",
+      "dist_m": 30,
+      "hint": "",
+      "lat": 51.5118113,
+      "lon": -0.1243648
+    },
+    {
+      "id": 17,
+      "name": "St Paul's Church",
+      "kind": "Place Of Worship",
+      "dist_m": 30,
+      "hint": "",
+      "lat": 51.5115471,
+      "lon": -0.1236892
+    },
+    {
+      "id": 18,
+      "name": "Inigo Jones Garden",
+      "kind": "Garden",
+      "dist_m": 30,
+      "hint": "",
+      "lat": 51.5114236,
+      "lon": -0.1239729
+    },
+    {
+      "id": 19,
+      "name": "40, King Street Wc2",
+      "kind": "building",
+      "dist_m": 30,
+      "hint": "building in Westminster, London, England, UK",
+      "lat": 51.511954,
+      "lon": -0.124157
+    },
+    {
+      "id": 20,
+      "name": "38, King Street Wc2",
+      "kind": "building",
+      "dist_m": 30,
+      "hint": "building in Westminster, London, England, UK",
+      "lat": 51.511873,
+      "lon": -0.124349
+    },
+    {
+      "id": 21,
+      "name": "37, King Street Wc2",
+      "kind": "building",
+      "dist_m": 30,
+      "hint": "building in Westminster, London, England, UK",
+      "lat": 51.5118,
+      "lon": -0.124427
+    },
+    {
+      "id": 22,
+      "name": "Sandro",
+      "kind": "Clothes",
+      "dist_m": 40,
+      "hint": "",
+      "lat": 51.5116995,
+      "lon": -0.1245756
+    },
+    {
+      "id": 23,
+      "name": "Polo Ralph Lauren",
+      "kind": "Clothes",
+      "dist_m": 40,
+      "hint": "",
+      "lat": 51.5115084,
+      "lon": -0.1244405
+    },
+    {
+      "id": 24,
+      "name": "Creed",
+      "kind": "Perfumery",
+      "dist_m": 40,
+      "hint": "",
+      "lat": 51.5114864,
+      "lon": -0.1245148
+    },
+    {
+      "id": 25,
+      "name": "St Paul's Church, Covent Garden",
+      "kind": "church building",
+      "dist_m": 40,
+      "hint": "church in Covent Garden, London, England, UK",
+      "lat": 51.5114,
+      "lon": -0.124167
+    },
+    {
+      "id": 26,
+      "name": "36, King Street Wc2",
+      "kind": "building",
+      "dist_m": 40,
+      "hint": "building in Westminster, London, England, UK",
+      "lat": 51.511808,
+      "lon": -0.124496
+    },
+    {
+      "id": 27,
+      "name": "41 And 42, King Street Wc2",
+      "kind": "building",
+      "dist_m": 40,
+      "hint": "building in Westminster, London, England, UK",
+      "lat": 51.512022,
+      "lon": -0.124002
+    },
+    {
+      "id": 28,
+      "name": "Clos Maggiore",
+      "kind": "Restaurant",
+      "dist_m": 50,
+      "hint": "",
+      "lat": 51.5116782,
+      "lon": -0.1246635
+    },
+    {
+      "id": 29,
+      "name": "Maje",
+      "kind": "Clothes",
+      "dist_m": 50,
+      "hint": "",
+      "lat": 51.5114537,
+      "lon": -0.1245813
+    },
+    {
+      "id": 30,
+      "name": "Maxwell‘s Bar & Grill",
+      "kind": "Restaurant",
+      "dist_m": 50,
+      "hint": "",
+      "lat": 51.5116219,
+      "lon": -0.1247172
+    },
+    {
+      "id": 31,
+      "name": "Oystermen",
+      "kind": "Restaurant",
+      "dist_m": 50,
+      "hint": "",
+      "lat": 51.5112769,
+      "lon": -0.1236177
+    },
+    {
+      "id": 32,
+      "name": "43 King Street",
+      "kind": "theatre building",
+      "dist_m": 50,
+      "hint": "building in Covent Garden, London",
+      "lat": 51.5121,
+      "lon": -0.123859
+    },
+    {
+      "id": 33,
+      "name": "14, King Street Wc2",
+      "kind": "building",
+      "dist_m": 50,
+      "hint": "building in Westminster, London, England, UK",
+      "lat": 51.511425,
+      "lon": -0.124634
+    },
+    {
+      "id": 34,
+      "name": "33, King Street Wc2",
+      "kind": "building",
+      "dist_m": 50,
+      "hint": "building in Westminster, London, England, UK",
+      "lat": 51.511677,
+      "lon": -0.124771
+    },
+    {
+      "id": 35,
+      "name": "Aspinal of London",
+      "kind": "Fashion Accessories",
+      "dist_m": 60,
+      "hint": "",
+      "lat": 51.5120307,
+      "lon": -0.1232669
+    },
+    {
+      "id": 36,
+      "name": "Godiva Chocolatier",
+      "kind": "Chocolate",
+      "dist_m": 60,
+      "hint": "",
+      "lat": 51.5120018,
+      "lon": -0.1233306
+    },
+    {
+      "id": 37,
+      "name": "Matiere Premiere",
+      "kind": "Perfumery",
+      "dist_m": 60,
+      "hint": "",
+      "lat": 51.511593,
+      "lon": -0.124846
+    },
+    {
+      "id": 38,
+      "name": "Thomas Arne",
+      "kind": "Memorial",
+      "dist_m": 60,
+      "hint": "",
+      "lat": 51.5115876,
+      "lon": -0.1247817
+    },
+    {
+      "id": 39,
+      "name": "Nigel Cabourn",
+      "kind": "Clothes",
+      "dist_m": 60,
+      "hint": "",
+      "lat": 51.5111355,
+      "lon": -0.1239244
+    },
+    {
+      "id": 40,
+      "name": "Punch & Judy",
+      "kind": "Pub",
+      "dist_m": 70,
+      "hint": "",
+      "lat": 51.5118249,
+      "lon": -0.1230419
+    },
+    {
+      "id": 41,
+      "name": "Apple Market",
+      "kind": "Marketplace",
+      "dist_m": 70,
+      "hint": "",
+      "lat": 51.511991,
+      "lon": -0.1230691
+    },
+    {
+      "id": 42,
+      "name": "Tom Ford",
+      "kind": "Perfumery",
+      "dist_m": 70,
+      "hint": "",
+      "lat": 51.5120705,
+      "lon": -0.1231831
+    },
+    {
+      "id": 43,
+      "name": "The Moomin Shop",
+      "kind": "Toys",
+      "dist_m": 70,
+      "hint": "",
+      "lat": 51.5118245,
+      "lon": -0.1229896
+    },
+    {
+      "id": 44,
+      "name": "Rails",
+      "kind": "Clothes",
+      "dist_m": 70,
+      "hint": "",
+      "lat": 51.5122516,
+      "lon": -0.1245412
+    },
+    {
+      "id": 45,
+      "name": "Cambridge Satchel",
+      "kind": "Bag",
+      "dist_m": 70,
+      "hint": "",
+      "lat": 51.511859,
+      "lon": -0.1230907
+    },
+    {
+      "id": 46,
+      "name": "L'Occitane",
+      "kind": "Cosmetics",
+      "dist_m": 70,
+      "hint": "",
+      "lat": 51.5118016,
+      "lon": -0.1230411
+    },
+    {
+      "id": 47,
+      "name": "Elephant",
+      "kind": "Artwork",
+      "dist_m": 70,
+      "hint": "",
+      "lat": 51.5116609,
+      "lon": -0.1250724
+    },
+    {
+      "id": 48,
+      "name": "A.P.C.",
+      "kind": "Clothes",
+      "dist_m": 70,
+      "hint": "",
+      "lat": 51.5120717,
+      "lon": -0.1248688
+    },
+    {
+      "id": 49,
+      "name": "Ganni",
+      "kind": "Clothes",
+      "dist_m": 70,
+      "hint": "",
+      "lat": 51.5121669,
+      "lon": -0.1246999
+    }
+  ],
+  "picks": [
+    {
+      "candidate_id": 1,
+      "reason": "Evans Music-and-Supper Rooms was a 19th-century entertainment venue with music and singing, aligning with theatre history."
+    },
+    {
+      "candidate_id": 32,
+      "reason": "43 King Street is a theatre building, directly relevant to theatre history."
+    },
+    {
+      "candidate_id": 4,
+      "reason": "Middle Earth was a 1960s hippie club, suggesting hidden, alternative spaces in the area."
+    },
+    {
+      "candidate_id": 10,
+      "reason": "Covent Garden Piazza is an artwork with historical significance and could be part of hidden alleys."
+    },
+    {
+      "candidate_id": 33,
+      "reason": "14, King Street Wc2 is a building that might contribute to the area's hidden alley character."
+    }
+  ],
+  "note": "Covent Garden offers a mix of historical entertainment venues and potential hidden spaces, though many stops are commercial or modern."
+}

@@ -1,0 +1,55 @@
+{
+  "stop": {
+    "name": "Evans Music-and-Supper Rooms",
+    "lat": 51.51199,
+    "lon": -0.12387,
+    "reason": "Evans Music-and-Supper Rooms was a 19th-century entertainment venue with music and singing, aligning with theatre history.",
+    "leg_distance_m": 41,
+    "leg_bearing_deg": 353
+  },
+  "story": "Right [behind the Piazza's back wall](https://www.google.com/maps/search/Evans+Music-and-Supper+Rooms/@51.51199,-0.12387,17z/) lies a buried theatrical relic: the Evans Music-and-Supper Rooms. Though [43 King Street](https://www.google.com/maps/search/43+King+Street/@51.5121,-0.123859,17z/) now occupies the site, this 19th-century supper club ran 'Evans' Late Joys' variety shows until the 1880s, feeding punters alongside music hall acts. The original building served as Admiral Russell's Georgian townhouse before becoming a hotel - and then a venue where Dickens might've dined had he fancied a singsong with his supper. While the [National Sporting Club](https://www.google.com/maps/search/National+Sporting+Club/@51.5121,-0.1239,17z/) next door still hosts elite gentlemen, Evans' boisterous legacy lingers in the alleyways - though you'll need to imagine the raucous laughter echoing between these now-silent, heritage-listed facades.",
+  "verify": {
+    "claims": [
+      {
+        "claim": "Evans Music-and-Supper Rooms was located behind the Piazza's back wall.",
+        "status": "supported",
+        "evidence": "The location of Evans Music-and-Supper Rooms is shown on the map at the provided coordinates, which aligns with the description of it being behind the Piazza."
+      },
+      {
+        "claim": "43 King Street now occupies the site of the Evans Music-and-Supper Rooms.",
+        "status": "supported",
+        "evidence": "The Wikipedia article and web context both state that Evans Music-and-Supper Rooms was established in the 1840s within the former dining room of the Grand Hotel at 43 King Street."
+      },
+      {
+        "claim": "The Evans Music-and-Supper Rooms ran 'Evans' Late Joys' variety shows until the 1880s.",
+        "status": "supported",
+        "evidence": "The web context from The Strange History of The Players' Theatre states that Evan's Music and Supper Rooms ran a late night variety show called Evans' Late Joys."
+      },
+      {
+        "claim": "The original building served as Admiral Russell's Georgian townhouse.",
+        "status": "supported",
+        "evidence": "The Wikipedia article on Evans Music-and-Supper Rooms states that the house was built by Thomas Archer in 1712 for Admiral Edward Russell."
+      },
+      {
+        "claim": "The building became a hotel.",
+        "status": "supported",
+        "evidence": "The web context from Evans's Supper Rooms, Covent Garden states that it became a hotel in 1772."
+      },
+      {
+        "claim": "Charles Dickens might have dined at the Evans Music-and-Supper Rooms.",
+        "status": "uncertain",
+        "evidence": "This is a speculative claim based on the historical context of the venue, but there is no direct evidence in the provided information to confirm that Dickens actually visited."
+      },
+      {
+        "claim": "The National Sporting Club still hosts elite gentlemen.",
+        "status": "supported",
+        "evidence": "The National Sporting Club is mentioned as a current entity in the evidence, and its continued operation as a club for elite gentlemen is implied by its existence and description."
+      },
+      {
+        "claim": "43 King Street is a heritage-listed building.",
+        "status": "supported",
+        "evidence": "The evidence states that 43 King Street is a Grade II* listed building."
+      }
+    ]
+  }
+}

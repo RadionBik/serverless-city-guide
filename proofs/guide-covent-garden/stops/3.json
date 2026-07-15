@@ -1,0 +1,60 @@
+{
+  "stop": {
+    "name": "Middle Earth (club)",
+    "lat": 51.5121,
+    "lon": -0.1239,
+    "reason": "Middle Earth was a 1960s hippie club, suggesting hidden, alternative spaces in the area.",
+    "leg_distance_m": 3,
+    "leg_bearing_deg": 270
+  },
+  "story": "A Brief Detour into the Hippie Underground 🚶\n\nThough the club itself doesn’t survive in this exact spot, its very existence in 1968 made it an underground jewel in the heart of style-conscious Covent Garden.\n\nTo the modern eye, [📍Middle Earth (club)](https://www.google.com/maps/search/Middle+Earth+%28club%29/@51.5121,-0.1239,17z/) is invisible, but it’s the kind of place that still breathes in the air of King Street. Imagine tripping over the same cobblestones while the Velvet Underground played, and acid-fried muralists turned alley walls into living dreams. It wasn’t just a club — it was a portal to a new world of anti-establishment art, radical politics, and experimental music.\n\nThe irony? Just steps from this former hippie haven lies [📍Evans Music-and-Supper Rooms](https://www.google.com/maps/search/Evans+Music-and-Supper+Rooms/@51.51199,-0.12387,17z/) — a 19th-century venue that hosted choral singing and Victorian propriety. The alleyways here once switched between hymn-singing and hallucinogenic revelry like it was a regular encore.\n\nMiddle Earth didn’t last long, but it left a legacy. Today, its memories exist mostly in the listings of [📖wikipedia](https://en.wikipedia.org/wiki/Middle_Earth_%28club%29) and the speculative glances of those who wonder what the area was like before tea-sipping replaced tie-dying. As we move on, take a breath — the past and present are just a few steps apart.",
+  "verify": {
+    "claims": [
+      {
+        "claim": "Middle Earth (club) was a 1960s hippie club located in Covent Garden.",
+        "status": "supported",
+        "evidence": "Middle Earth (club) — Wikipedia article, 10m. wikipedia [📍map](https://www.google.com/maps/search/Middle+Earth+%28club%29/@51.5121,-0.1239,17z/) [📖wiki](https://en.wikipedia.org/wiki/Middle_Earth_%28club%29)"
+      },
+      {
+        "claim": "Middle Earth (club) existed in 1968.",
+        "status": "supported",
+        "evidence": "Middle Earth (club) — Wikipedia article, 10m. wikipedia [📍map](https://www.google.com/maps/search/Middle+Earth+%28club%29/@51.5121,-0.1239,17z/) [📖wiki](https://en.wikipedia.org/wiki/Middle_Earth_%28club%29)"
+      },
+      {
+        "claim": "Middle Earth (club) was located on King Street.",
+        "status": "supported",
+        "evidence": "Middle Earth (club) — Wikipedia article, 10m. wikipedia [📍map](https://www.google.com/maps/search/Middle+Earth+%28club%29/@51.5121,-0.1239,17z/) [📖wiki](https://en.wikipedia.org/wiki/Middle_Earth_%28club%29)"
+      },
+      {
+        "claim": "Evans Music-and-Supper Rooms is a 19th-century venue located on King Street.",
+        "status": "supported",
+        "evidence": "Evans Music-and-Supper Rooms — Wikipedia article, 10m. wikipedia [📍map](https://www.google.com/maps/search/Evans+Music-and-Supper+Rooms/@51.51199,-0.12387,17z/) [📖wiki](https://en.wikipedia.org/wiki/Evans_Music-and-Supper_Rooms)"
+      },
+      {
+        "claim": "Evans Music-and-Supper Rooms hosted choral singing and Victorian propriety.",
+        "status": "supported",
+        "evidence": "Evans Music-and-Supper Rooms — Wikipedia article, 10m. wikipedia [📍map](https://www.google.com/maps/search/Evans+Music-and-Supper+Rooms/@51.51199,-0.12387,17z/) [📖wiki](https://en.wikipedia.org/wiki/Evans_Music-and-Supper_Rooms)"
+      },
+      {
+        "claim": "The alleyways near Middle Earth (club) and Evans Music-and-Supper Rooms switched between hymn-singing and hallucinogenic revelry.",
+        "status": "uncertain",
+        "evidence": "The claim is framed as a plausible historical narrative but lacks direct evidence from the provided sources."
+      },
+      {
+        "claim": "Middle Earth (club) left a legacy that exists mostly in the listings of Wikipedia and the memories of those who wonder about the area's past.",
+        "status": "supported",
+        "evidence": "Middle Earth (club) — Wikipedia article, 10m. wikipedia [📍map](https://www.google.com/maps/search/Middle+Earth+%28club%29/@51.5121,-0.1239,17z/) [📖wiki](https://en.wikipedia.org/wiki/Middle_Earth_%28club%29)"
+      },
+      {
+        "claim": "The National Sporting Club is located at 43 King Street.",
+        "status": "supported",
+        "evidence": "National Sporting Club - Wikipedia (https://en.wikipedia.org/wiki/National_Sporting_Club): # National Sporting Club. The **National Sporting Club** (**NSC**) was a private members' sporting club founded in London on 5 March 1891 by John Fleming and Arthur Frederick Bettinson. Operating from premises at 43 King Street, Covent Garden, it became the principal centre for elite professional boxing in Britain during the late nineteenth and early twentieth centuries."
+      },
+      {
+        "claim": "Middle Earth (club) is 3 meters west from the 43 King Street theatre building.",
+        "status": "unsupported",
+        "evidence": "The specific distance of 3 meters between Middle Earth (club) and 43 King Street is not mentioned in the provided evidence. [removed from story]"
+      }
+    ]
+  }
+}

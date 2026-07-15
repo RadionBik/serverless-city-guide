@@ -1,0 +1,69 @@
+{
+  "metadata": {
+    "id": "aijob-e00zfrt79qjvrpp1a6",
+    "parent_id": "project-e00q4cm8pr00tck09sdggv",
+    "name": "prebake-covent-garden-v3",
+    "resource_version": "1",
+    "created_at": "2026-07-12T21:18:26.218198Z",
+    "updated_at": "2026-07-12T21:18:26.218198Z"
+  },
+  "spec": {
+    "image": "cr.eu-north1.nebius.cloud/e00zt1z5sd5n3g3jkh/city-guide-prebake:latest",
+    "environment_variables": [
+      {
+        "name": "GUIDE_STORE_DIR",
+        "value": "/store"
+      },
+      {
+        "name": "TOUR_JSON",
+        "value": "/store/tour-51.5117_-0.1240-1783888760/tour.json"
+      },
+      {
+        "name": "LLM_MODEL",
+        "value": "Qwen/Qwen3-32B"
+      },
+      {
+        "name": "TAVILY_API_KEY",
+        "value": "**REDACTED**"
+      }
+    ],
+    "volumes": [
+      {
+        "source": "s3://city-guide-store",
+        "container_path": "/store",
+        "mode": "READ_WRITE",
+        "s3_config": {
+          "endpoint": "https://storage.eu-north1.nebius.cloud",
+          "region": "eu-north1",
+          "credentials": {
+            "access_key_id": "**HIDDEN**",
+            "secret_access_key": "**HIDDEN**",
+            "session_token": "**HIDDEN**"
+          }
+        }
+      }
+    ],
+    "platform": "gpu-h100-sxm",
+    "preset": "1gpu-16vcpu-200gb",
+    "shm_size_bytes": "17179869184",
+    "disk": {
+      "type": "NETWORK_SSD",
+      "size_bytes": "268435456000"
+    },
+    "subnet_id": "vpcsubnet-e00tzzwgcjg9k8e6ps",
+    "timeout": "7200s"
+  },
+  "status": {
+    "instances": [
+      {
+        "state": "COMPLETED",
+        "compute_instance_id": "computeinstance-e00as9vy4ynmjjdx2z",
+        "compute_instance_state": "RUNNING",
+        "private_ip": "10.0.0.98"
+      }
+    ],
+    "state": "COMPLETED",
+    "started_at": "2026-07-12T21:24:51.619951729Z",
+    "finished_at": "2026-07-12T21:37:39.277265371Z"
+  }
+}
