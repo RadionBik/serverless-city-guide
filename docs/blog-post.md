@@ -128,20 +128,17 @@ a catalog of tour plans in one job and spread startup across them.
 The broader rule: pay per token for a standard model when possible; rent a GPU
 when custom weights, isolation, or a genuinely large batch justifies it.
 
-## Results
+## Outcome
 
-We tested four conditions:
+The prototype now runs the complete path from local data collection to a stored,
+auditable guide. It can repair or remove claims that fail review, decline to
+generate when evidence is missing, and reuse prepared material in later
+requests. The saved traces make each decision inspectable.
 
-- In data-rich Covent Garden, the judge reported all ten extracted claims as
-  supported on the first pass.
-- At the isolated Tan Hill Inn, one rejected claim triggered regeneration; the
-  replacement had no reported unsupported claims.
-- On empty moorland, the evidence guard returned no story and used no tokens.
-- Near a baked guide, accepted chapters could enrich a live answer.
-
-This is not a city guide that can never be wrong. It starts from local evidence,
-limits where the model may improvise, shows its checks, and leaves behind data
-with which to test the verifier again.
+These execution checks show that the system works end to end; they are not a
+broad accuracy benchmark. This is not a city guide that can never be wrong. It
+starts from local evidence, limits where the model may improvise, shows its
+checks, and leaves behind data with which to test the verifier again.
 
 Every place may have a story. The useful ones should come with receipts.
 
