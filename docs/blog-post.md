@@ -6,9 +6,9 @@
 
 ## The problem
 
-Ask a language model "what is interesting around me?" and it will usually give
-you a fluent answer. Fluency can hide invention: a model may create a pub, move
-a monument, or attach a real place name to the wrong coordinates.
+Ask an LLM "what's interesting around me?" and it will answer — beautifully and
+often wrongly. It may create a pub, move a monument, or attach a real place name
+to the wrong coordinates.
 
 We saw this in rural Wales. Given a pin in empty moorland, the model confidently
 described The Mumbles, a real seaside area about 90 km away, then linked the
