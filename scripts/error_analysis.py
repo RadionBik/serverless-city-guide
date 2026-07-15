@@ -11,13 +11,11 @@ import json
 from collections import Counter
 from pathlib import Path
 
-rows = [
-    json.loads(line)
-    for line in Path(__file__).resolve().parents[1] / "tests/data/dev_claims.jsonl".read_text().splitlines()
-]
+claims_path = Path(__file__).resolve().parents[1] / "tests/data/dev_claims.jsonl"
+rows = [json.loads(line) for line in claims_path.read_text().splitlines()]
 
 
-def pct(a, b):
+def pct(a: int, b: int) -> str:
     return f"{a}/{b} = {a / b:.0%}" if b else "n/a"
 
 

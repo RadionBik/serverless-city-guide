@@ -90,20 +90,18 @@ aws s3 sync s3://city-guide-store/<guide-id> guides/<guide-id>
 uv run guide.py show <guide-id>
 ```
 
-## Hardware, runtime, cost (measured)
+## Hardware, runtime, and cost
 
-Both surfaces run `Qwen/Qwen3-32B` (bf16, ~65 GB) on one H100 80 GB
-(`gpu-h100-sxm`, `1gpu-16vcpu-200gb`, $3.85/GPU-hr), `max_model_len` 16k.
+The measured proof runs used `Qwen/Qwen3-32B` with a 16k context on one H100
+80 GB (`gpu-h100-sxm`, `1gpu-16vcpu-200gb`, $3.85/GPU-hour).
 
-| Path | Time | Cost |
-|---|---|---|
-| Route confirmation (gather + curate) | ~30–60 s | pennies (Token Factory or endpoint) |
-| Bake via hot endpoint (`tour --local`) | ~2 min / 5 stops | ~$0.13 |
-| Cloud job, total | ~20 min (17 min fixed startup + ~2 min baking) | ~$1.27 |
+| Path | Observed time | Estimated compute cost |
+|---|---:|---:|
+| Bake five stops through a running endpoint | About 2 minutes | About $0.13 |
+| Bake the same guide as a new GPU job | About 13 minutes | About $0.82 |
 
-The job's ~17 min startup tax (scheduling, image pull, model load) is fixed per
-run — batch many tours per job to amortize it. A single tour for a waiting user
-is better served by the hot endpoint; the job is the throughput path.
+The job estimate uses its active duration and excludes small storage charges.
+Expected guide and trace outputs are available in [`proofs/`](proofs/).
 
 ## License
 

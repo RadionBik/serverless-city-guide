@@ -8,7 +8,7 @@ MODEL="${LLM_MODEL:-Qwen/Qwen3-32B}"
 NAME="${ENDPOINT_NAME:-city-guide-storyteller}"
 PLATFORM="${ENDPOINT_PLATFORM:-gpu-h100-sxm}"
 PRESET="${ENDPOINT_PRESET-1gpu-16vcpu-200gb}"  # set ENDPOINT_PRESET="" to use the platform's minimum preset
-# extra vLLM args, e.g. --trust-remote-code for Bespoke-MiniCheck-7B (internlm2 arch)
+# Optional extra vLLM launch arguments for models that require them.
 EXTRA_ARGS="${ENDPOINT_EXTRA_ARGS:-}"
 
 nebius ai endpoint create \

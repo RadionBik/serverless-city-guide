@@ -13,6 +13,7 @@ import os
 import re
 import sys
 from pathlib import Path
+from typing import Any
 
 import httpx
 
@@ -86,7 +87,7 @@ async def main() -> None:
     sem = asyncio.Semaphore(16)
     headers = {"Authorization": f"Bearer {API_KEY}"}
 
-    async def ask_row(client: httpx.AsyncClient, r: dict) -> tuple[int | None, str]:
+    async def ask_row(client: httpx.AsyncClient, r: dict[str, Any]) -> tuple[int | None, str]:
         doc = evidence[r["stop"]]
         if mode != "minicheck_chunked":
             return await ask(client, sem, TMPL[mode], model, doc, r["claim"])
